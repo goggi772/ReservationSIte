@@ -1,7 +1,6 @@
 package com.reserv.reservationsite.core.entity;
 
 import lombok.*;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 
@@ -9,15 +8,15 @@ import javax.persistence.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Seat {
+public class Bike {
 
     @Id
-    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private SeatStatus status;
+    private BikeStatus status;
 
     @OneToOne
     @JoinColumn(name = "member_id", nullable = true)
