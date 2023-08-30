@@ -1,6 +1,7 @@
 package com.reserv.reservationsite.core.entity;
 
 import lombok.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 
@@ -15,21 +16,28 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 15, unique = true)
-    private String userid;
-
     @Column(nullable = false, length = 5)
     private String name;
+
+    @Column(nullable = false, length = 15, unique = true)
+    private String username;
 
     @Column(nullable = false, length = 20)
     private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private Role isAdmin;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private SeatStatus seatStatus;
+    private boolean isReserved;
+
+    public void modi_username(String name) {
+        this.name = name;
+    }
+
+    public void reset_pass(String password) {
+        this.password = password;
+    }
 
 }

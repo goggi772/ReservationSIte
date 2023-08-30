@@ -10,22 +10,19 @@ import lombok.*;
 @NoArgsConstructor
 public class RegisterDTO {
 
-    private Long id;
-
-    private String userid;
+    private String username;
 
     private String name;
 
     private String password;
 
-    private Role role;
-
     public Member toEntity() {
         return Member.builder()
-                .userid(userid)
+                .username(username)
                 .name(name)
                 .password(password)
-                .role(Role.USER)
+                .isAdmin(Role.USER)
+                .isReserved(false)
                 .build();
     }
 }

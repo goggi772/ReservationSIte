@@ -17,7 +17,7 @@ public class MemberDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collectors = new ArrayList<>();
 
-        collectors.add(() -> "ROLE_" + member.getRole());
+        collectors.add(() -> "ROLE_" + member.getIsAdmin());
 
         return collectors;
     }
@@ -29,7 +29,7 @@ public class MemberDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return member.getUserid();
+        return member.getUsername();
     }
 
     @Override
