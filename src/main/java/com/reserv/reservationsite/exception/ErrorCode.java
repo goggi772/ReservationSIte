@@ -9,6 +9,9 @@ import static org.springframework.http.HttpStatus.*;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
+    //200 OK
+    STATUS_OK(OK, "성공"),
+
     //400 BAD_REQUEST
     INVALID_ID(BAD_REQUEST, "유효하지 않은 ID입니다."),
     INVALID_INPUT_VALUE(BAD_REQUEST, "입력 양식과 맞지않는 입력값입니다."),
