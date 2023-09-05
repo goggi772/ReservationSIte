@@ -16,4 +16,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleNotFoundUserException(NotFoundUserException exception) {
         return ErrorResponse.toResponseEntity(exception.getErrorCode());
     }
+
+    @ExceptionHandler(SuccessfulException.class)
+    public ResponseEntity<ErrorResponse> handleSuccessfulException(SuccessfulException exception) {
+        return ErrorResponse.toResponseEntity(exception.getErrorCode());
+    }
 }

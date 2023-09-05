@@ -70,6 +70,11 @@ public class MemberService {
         memberRepository.save(member);
     }
 
+    public MemberDTO findByMember(String username) {
+        return memberRepository.findByUsername(username).map(MemberDTO::new).orElseThrow(() ->
+                new NotFoundUserException(ErrorCode.NOT_EXIST_USER));
+    }
+
 
 
 

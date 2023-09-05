@@ -1,18 +1,23 @@
 package com.reserv.reservationsite.DTO;
 
+import com.reserv.reservationsite.core.entity.Bike;
 import com.reserv.reservationsite.core.entity.Member;
 import com.reserv.reservationsite.core.entity.BikeStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class BikeDTO {
 
-    private Long id;
+    private Long bikeId;
 
-    private BikeStatus status;
 
-    private Member member;
+
+    private String username;
+
 
 }

@@ -1,5 +1,6 @@
 package com.reserv.reservationsite.core.entity;
 
+import com.reserv.reservationsite.DTO.MemberDTO;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,11 +19,16 @@ public class Bike {
     @Column(nullable = false)
     private BikeStatus status;
 
-    @OneToOne
-    @JoinColumn(name = "member_id", nullable = true)
-    private Member member;
+    @Column(unique = true)
+    private String owner;
 
-    public void seat_reserv(Member member) {
-        this.member = member;
+    public void seat_reserv(String owner) {
+        this.status = BikeStatus.completed;
+        this.owner = owner;
+    }
+
+    public void cancel_reserv() {
+        this.status = BikeStatus.available;
+        this.owner = null;
     }
 }

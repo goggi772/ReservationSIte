@@ -11,6 +11,9 @@ import static org.springframework.http.HttpStatus.*;
 public enum ErrorCode {
     //200 OK
     STATUS_OK(OK, "성공"),
+    RESERVATION_SUCCESSFUL(OK, "예약 되었습니다."),
+    CANCEL_SUCCESSFUL(OK, "예약이 취소되었습니다."),
+
 
     //400 BAD_REQUEST
     INVALID_ID(BAD_REQUEST, "유효하지 않은 ID입니다."),
@@ -18,6 +21,8 @@ public enum ErrorCode {
     NOT_EQUAL_PASSWORD(BAD_REQUEST, "비밀번호가 맞지 않습니다."),
     ALREADY_EXIST_USERNAME(BAD_REQUEST, "이미 존재하는 아이디입니다."),
     ALREADY_RESERVED(BAD_REQUEST, "이미 예약된 자리입니다."),
+    RESERVE_ONLY_ONE_BIKE(BAD_REQUEST, "하나의 자리만 예약할 수 있습니다."),
+    DISABLED_BIKE(BAD_REQUEST, "이용 불가능한 자리입니다."),
     NOT_EXIST_BIKE(BAD_REQUEST, "존재하지 않는 자리입니다."),
     NOT_EXIST_USER(BAD_REQUEST, "존재하지 않는 유저입니다."),
     RESERVATION_NOT_POSSIBLE(BAD_REQUEST, "예약 가능한 시간이 아닙니다."),

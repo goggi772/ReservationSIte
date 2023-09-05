@@ -25,6 +25,7 @@ public class AdminController {
 
         try {
             memberService.register(dto);
+            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -51,25 +52,5 @@ public class AdminController {
         }
     }
 
-    @PostMapping("/auth/user")
-    public void auth_user(@AuthenticationPrincipal UserDetails userDetails, HttpServletResponse response) throws IOException {
-        GrantedAuthority authority = (GrantedAuthority) userDetails.getAuthorities();
-        String role = authority.getAuthority();
-        if (role.equals("ROLE_USER")) {
-            response.setStatus(HttpServletResponse.SC_OK);
-        } else {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-        }
-    }
 
-    @PostMapping("/auth/admin")
-    public void auth_admin(@AuthenticationPrincipal UserDetails userDetails, HttpServletResponse response) throws IOException {
-        GrantedAuthority authority = (GrantedAuthority) userDetails.getAuthorities();
-        String role = authority.getAuthority();
-        if (role.equals("ROLE_ADMIN")) {
-            response.setStatus(HttpServletResponse.SC_OK);
-        } else {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-        }
-    }
 }

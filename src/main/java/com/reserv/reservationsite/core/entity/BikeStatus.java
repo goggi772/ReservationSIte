@@ -6,6 +6,6 @@ import lombok.RequiredArgsConstructor;
 
 public enum BikeStatus {
 
-    disabled, complete, available
+    disabled, completed, available
 
 }

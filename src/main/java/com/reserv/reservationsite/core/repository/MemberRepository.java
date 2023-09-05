@@ -1,5 +1,6 @@
 package com.reserv.reservationsite.core.repository;
 
+import com.reserv.reservationsite.DTO.MemberDTO;
 import com.reserv.reservationsite.core.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -7,5 +8,5 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    Optional<Member> findByUsername(String userid);
+    Optional<Member> findByUsername(String username);
 }

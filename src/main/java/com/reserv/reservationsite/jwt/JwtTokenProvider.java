@@ -30,7 +30,7 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    // 유저 정보를 가지고 AccessToken, RefreshToken 을 생성하는 메서드
+    // 유저 정보를 가지고 AccessToken, RefreshToken 을 생성
     public TokenInfo generateToken(Authentication authentication) {
         // 권한 가져오기
         String authorities = authentication.getAuthorities().stream()
@@ -40,7 +40,7 @@ public class JwtTokenProvider {
         long now = System.currentTimeMillis();
 
         // Access Token 생성
-        Date accessTokenExpiresIn = new Date(now + 60000 * 5);    //5분
+        Date accessTokenExpiresIn = new Date(now + 60000 * 10);    //10분
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
