@@ -21,9 +21,9 @@ const LogoutBtn = () => {
   return (
     <button
       onClick={onClickBtn}
-      className="absolute top-4 right-4 bg-gray-500 rounded-md p-2"
+      className="absolute top-4 right-4 bg-gray-500 rounded-md p-2 text-white"
     >
-      Logout
+      로그아웃
     </button>
   );
 };

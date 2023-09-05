@@ -1,7 +1,7 @@
 // pages/login.tsx
 "use client";
 
-import { fetchLogin } from "@/routes/route";
+import {fetchLogin, getCheckAdmin} from "@/routes/route";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import WithAuthOnly from "@/components/hoc/WithAuthOnly";
@@ -20,6 +20,7 @@ const LoginPage = () => {
 
     const response = await fetchLogin(username, password);
 
+
     if (response.status === 200) {
       console.log("성공: "+ response.status)
       const data = await response.json();
@@ -28,7 +29,10 @@ const LoginPage = () => {
       Cookies.set('accessToken', accessToken);
       Cookies.set('refreshToken', refreshToken);
       setError(null);
-      router.push("/reservation");
+      const res = await getCheckAdmin();
+      if (res) router.push("/admin/reservation");
+      else router.push("/reservation");
+
     } else if (response.status === 500) {
       alert("Internal Server Error!");
     } else {

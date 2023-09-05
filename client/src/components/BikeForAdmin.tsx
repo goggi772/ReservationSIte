@@ -6,7 +6,7 @@ const BikeForAdmin: React.FC<IAdminBikeProps> = ({
   id,
   status,
   onClick,
-  ownerID,
+  owner,
 }) => {
   let bgColor;
   let isClickable = true;

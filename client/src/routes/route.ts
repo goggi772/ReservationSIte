@@ -63,7 +63,7 @@ export const getUsername = async () => {
 
 
 
-export const putBikeInfo = async (bikeId: number, status: string) => {
+export const putBikeInfo = async (bikeId: number) => {
   const accessToken = Cookies.get('accessToken');
   const res = await fetch(serverURL + "/bike/reservation", {
     method: "PUT",
@@ -72,10 +72,8 @@ export const putBikeInfo = async (bikeId: number, status: string) => {
       "Authorization": `Bearer ${accessToken}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ bikeId, status }),
+    body: JSON.stringify({ bikeId }),
   });
-  console.log(bikeId);
-  console.log(status);
 
   return res;
 };
@@ -198,13 +196,16 @@ export const getCheckAuth = async () => {
 };
 
 export const getCheckAdmin = async () => {
+  const accessToken = Cookies.get('accessToken');
   const res = await fetch(serverURL + "/auth/admin", {
     method: "GET",
     credentials: "include",
     headers: {
+      "Authorization": `Bearer ${accessToken}`,
       "Content-Type": "application/json",
     },
   });
+  console.log("어드민" + accessToken);
 
   if (res.status === 200) {
     return true;
