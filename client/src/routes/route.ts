@@ -47,16 +47,35 @@ export const getBikes = async () => {
   });
   return res;
 };
+export const getUsername = async () => {
+  const accessToken = Cookies.get('accessToken');
 
-export const putBikeInfo = async (bikeID: string, status: string) => {
-  const res = await fetch(serverURL, {
+  const res = await fetch(serverURL + "/get/user", {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Authorization": `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+  });
+  return res;
+};
+
+
+
+export const putBikeInfo = async (bikeId: number, status: string) => {
+  const accessToken = Cookies.get('accessToken');
+  const res = await fetch(serverURL + "/bike/reservation", {
     method: "PUT",
     credentials: "include",
     headers: {
+      "Authorization": `Bearer ${accessToken}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ bikeID, status }),
+    body: JSON.stringify({ bikeId, status }),
   });
+  console.log(bikeId);
+  console.log(status);
 
   return res;
 };
@@ -130,7 +149,7 @@ export const deleteUser = async (id: string) => {
   return res;
 };
 
-export const putCancleBook = async (bikeID: string, status: string) => {
+export const putCancleBook = async (bikeID: number, status: string) => {
   const res = await fetch(serverURL, {
     method: "PUT",
     credentials: "include",
@@ -143,7 +162,7 @@ export const putCancleBook = async (bikeID: string, status: string) => {
   return res;
 };
 
-export const putDeleteBook = async (bikeID: string, status: string) => {
+export const putDeleteBook = async (bikeID: number, status: string) => {
   const res = await fetch(serverURL, {
     method: "PUT",
     credentials: "include",
