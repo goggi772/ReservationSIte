@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
 

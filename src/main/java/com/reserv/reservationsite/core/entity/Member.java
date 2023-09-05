@@ -29,8 +29,6 @@ public class Member {
     @Column(nullable = false)
     private Role isAdmin;
 
-    @Column(nullable = false)
-    private boolean isReserved;
 
     public void modi_username(String name) {
         this.name = name;

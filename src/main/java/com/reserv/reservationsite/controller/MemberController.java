@@ -43,15 +43,12 @@ public class MemberController {
     @GetMapping("/auth/user")
     public void auth_user(HttpServletResponse response,
                           @AuthenticationPrincipal UserDetails userDetails) throws IOException {
-
         Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
 
         if (authorities != null && !authorities.isEmpty()) {
             GrantedAuthority firstAuthority = authorities.iterator().next();
             String role = firstAuthority.getAuthority();
-            System.out.println(userDetails.getUsername());
-            System.out.println(role);
-            if ("ROLE_USER".equals(role)) {
+            if ("ROLE_USER".equals(role) || "ROLE_ADMIN".equals(role)) {
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -71,7 +68,7 @@ public class MemberController {
         if (authorities != null && !authorities.isEmpty()) {
             GrantedAuthority firstAuthority = authorities.iterator().next();
             String role = firstAuthority.getAuthority();
-            System.out.println(role);
+            System.out.println("admin권한이 있나요");
             if ("ROLE_ADMIN".equals(role)) {
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {

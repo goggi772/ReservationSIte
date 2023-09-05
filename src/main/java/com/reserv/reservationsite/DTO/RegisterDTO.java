@@ -21,8 +21,7 @@ public class RegisterDTO {
                 .username(username)
                 .name(name)
                 .password(password)
-                .isAdmin(Role.USER)
-                .isReserved(false)
+                .isAdmin(Role.ADMIN)
                 .build();
     }
 }

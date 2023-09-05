@@ -17,8 +17,5 @@ public class GlobalExceptionHandler {
         return ErrorResponse.toResponseEntity(exception.getErrorCode());
     }
 
-    @ExceptionHandler(SuccessfulException.class)
-    public ResponseEntity<ErrorResponse> handleSuccessfulException(SuccessfulException exception) {
-        return ErrorResponse.toResponseEntity(exception.getErrorCode());
-    }
+
 }
