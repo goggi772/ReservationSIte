@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import Cookies from "js-cookie";
-import {Cookie} from "next/dist/compiled/@next/font/dist/google";
+
 dotenv.config();
 
 const serverURL = process.env.NEXT_PUBLIC_SERVER_URL as string;
@@ -35,7 +35,6 @@ export const getLogout = async () => {
 
 export const getBikes = async () => {
   const accessToken = Cookies.get('accessToken');
-  const refreshToken = Cookies.get('refreshToken');
 
   const res = await fetch(serverURL + "/bike", {
     method: "GET",
@@ -83,10 +82,12 @@ export const postSignup = async (
   password: string,
   name: string
 ) => {
-  const res = await fetch(serverURL, {
+  const accessToken = Cookies.get('accessToken');
+  const res = await fetch(serverURL + "/admin/register", {
     method: "POST",
     credentials: "include",
     headers: {
+      "Authorization": `Bearer ${accessToken}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ username, password, name }),
@@ -96,10 +97,12 @@ export const postSignup = async (
 };
 
 export const getUserByUseranme = async (username: string) => {
+  const accessToken = Cookies.get('accessToken');
   const res = await fetch(serverURL, {
     method: "POST",
     credentials: "include",
     headers: {
+      "Authorization": `Bearer ${accessToken}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ username }),
@@ -122,16 +125,29 @@ export const putUserName = async (id: string, newName: string) => {
 };
 
 export const putUserPW = async (id: string) => {
-  const res = await fetch(serverURL, {
+  const accessToken = Cookies.get('accessToken');
+  return await fetch(serverURL, {
     method: "PUT",
     credentials: "include",
     headers: {
+      "Authorization": `Bearer ${accessToken}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ id }),
+    body: JSON.stringify({id}),
   });
+};
 
-  return res;
+export const changePW = async (oldPassword: string, newPassword: string) => {
+  const accessToken = Cookies.get('accessToken');
+  return await fetch(serverURL + "/changePw", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Authorization": `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({oldPassword, newPassword})
+  });
 };
 
 export const deleteUser = async (id: string) => {

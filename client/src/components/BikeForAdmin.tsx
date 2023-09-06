@@ -30,7 +30,8 @@ const BikeForAdmin: React.FC<IAdminBikeProps> = ({
         isClickable ? "cursor-pointer" : "cursor-not-allowed"
       }`}
     >
-      {id}
+      {id}<br/>
+      {owner}
     </button>
   );
 };

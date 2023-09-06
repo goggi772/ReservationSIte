@@ -105,8 +105,10 @@ const SeatsPage = () => {
 
   return (
     <div className="p-8">
-      <h1 className="text-3xl font-semibold mb-4">Bike Seat Reservation</h1>
-      <p className="text-3xl font-semibold mb-4 justify-end flex items-center">{username}님</p>
+      <h1 className="text-3xl font-semibold mb-4">Spinning Reservation</h1>
+      <div className="text-3xl mb-4 justify-end flex items-center">
+        {username}님
+      </div>
       <div className="grid grid-cols-5 gap-4">
         {bikes.map((bike, index) => (
           <BikeForUser

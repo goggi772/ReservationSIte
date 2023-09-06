@@ -85,12 +85,11 @@ const SeatsPage = () => {
         bike={bike}
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
-        ownerName="John Doe"
         cancelBook={handleCancleBook}
         disableBook={handleDisableBook}
       />
 
-      <h1 className="text-3xl font-semibold mb-4">Bike Seat Reservation</h1>
+      <h1 className="text-3xl font-semibold mb-4">Spinning Reservation</h1>
       <div className="grid grid-cols-6 gap-4">
         {bikes.map((bike, index) => (
           <BikeForAdmin

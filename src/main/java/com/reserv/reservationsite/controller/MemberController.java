@@ -34,6 +34,11 @@ public class MemberController {
         return memberService.login(dto.getUsername(), dto.getPassword());
     }
 
+    /*@PostMapping("/changePw")
+    public void changePw(@RequestParam String oldPassword, @RequestParam ) {
+
+    }*/
+
     @GetMapping("/get/user")
     public MemberDTO get_username(@AuthenticationPrincipal UserDetails userDetails) {
         return memberService.findByMember(userDetails.getUsername());

@@ -16,10 +16,7 @@ public enum ErrorCode {
 
 
     //400 BAD_REQUEST
-    INVALID_ID(BAD_REQUEST, "유효하지 않은 ID입니다."),
     INVALID_INPUT_VALUE(BAD_REQUEST, "입력 양식과 맞지않는 입력값입니다."),
-    NOT_EQUAL_PASSWORD(BAD_REQUEST, "비밀번호가 맞지 않습니다."),
-    ALREADY_EXIST_USERNAME(BAD_REQUEST, "이미 존재하는 아이디입니다."),
     ALREADY_RESERVED(BAD_REQUEST, "이미 예약된 자리입니다."),
     RESERVE_ONLY_ONE_BIKE(BAD_REQUEST, "하나의 자리만 예약할 수 있습니다."),
     DISABLED_BIKE(BAD_REQUEST, "이용 불가능한 자리입니다."),
@@ -29,6 +26,8 @@ public enum ErrorCode {
 
     // 401 UNAUTHORIZED
     INVALID_TOKEN(UNAUTHORIZED, "유효하지 않은 토큰입니다."),
+    EXPIRED_TOKEN(UNAUTHORIZED, "만료된 토큰입니다."),
+    INCORRECT_ID_PASSWORD(UNAUTHORIZED, "아이디 혹은 비밀번호가 맞지 않습니다."),
 
 
     //404 NOT_FOUND
