@@ -14,11 +14,17 @@ public class RegisterDTO {
 
     private String password;
 
+    private boolean isVIP;
+
+    private boolean isReserved;
+
     public Member toEntity() {
         return Member.builder()
                 .username(username)
                 .password(password)
                 .isAdmin(Role.USER)
+                .isVIP(isVIP)
+                .isReserved(false)
                 .build();
     }
 }

@@ -20,6 +20,7 @@ public enum ErrorCode {
     ALREADY_RESERVED(BAD_REQUEST, "이미 예약된 자리입니다."),
     RESERVE_ONLY_ONE_BIKE(BAD_REQUEST, "하나의 자리만 예약할 수 있습니다."),
     DISABLED_BIKE(BAD_REQUEST, "이용 불가능한 자리입니다."),
+    RESERVATION_ONLY_ONCE_A_DAY(BAD_REQUEST, "하루에 한 타임만 이용하실 수 있습니다."),
     NOT_EXIST_BIKE(BAD_REQUEST, "존재하지 않는 자리입니다."),
     NOT_EXIST_USER(BAD_REQUEST, "존재하지 않는 유저입니다."),
     RESERVATION_NOT_POSSIBLE(BAD_REQUEST, "예약 가능한 시간이 아닙니다."),
