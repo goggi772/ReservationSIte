@@ -1,6 +1,5 @@
 package com.reserv.reservationsite.core.entity;
 
-import com.reserv.reservationsite.DTO.MemberDTO;
 import lombok.*;
 
 import javax.persistence.*;

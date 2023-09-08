@@ -80,7 +80,6 @@ export const putBikeInfo = async (bikeId: number) => {
 export const postSignup = async (
   username: string,
   password: string,
-  name: string
 ) => {
   const accessToken = Cookies.get('accessToken');
   const res = await fetch(serverURL + "/admin/register", {
@@ -90,7 +89,7 @@ export const postSignup = async (
       "Authorization": `Bearer ${accessToken}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ username, password, name }),
+    body: JSON.stringify({ username, password}),
   });
 
   return res.status;

@@ -6,12 +6,14 @@ import BikeForUser from "@/components/BikeForUser";
 import WithAuthOnly from "@/components/hoc/WithAuthOnly";
 import LogoutBtn from "@/components/LogoutBtn";
 import Cookies from "js-cookie";
-import {router} from "next/client";
 import {useRouter} from "next/navigation";
+import Link from "next/link";
 
 const SeatsPage = () => {
   const [bikes, setBikes] = useState<IBike[]>([]);
   const [username, setUsername] = useState('');
+
+  const router = useRouter();
 
   const handleClick = async (index: number) => {
     const newBikes = [...bikes];
@@ -71,7 +73,7 @@ const SeatsPage = () => {
       }
 
       const data = await res2.json();
-      const { username, name } = data;
+      const { username } = data;
 
       setUsername(username);
 
@@ -87,27 +89,20 @@ const SeatsPage = () => {
     fetchBikes();
   }, []);
 
-  const LogoutBtn = () => {
-    const router = useRouter();
-
-    const onClickBtn = async () => {
-      const status = await getLogout();
-
-      // if (status === 200) router.refresh();
-      if (status === 204) {
-        Cookies.remove("accessToken");
-        Cookies.remove("refreshToken");
-        router.push("/login");
-      }
-    };
+  const changePwpage = () => {
+    router.push("/changepw")
   }
-
 
   return (
     <div className="p-8">
       <h1 className="text-3xl font-semibold mb-4">Spinning Reservation</h1>
-      <div className="text-3xl mb-4 justify-end flex items-center">
-        {username}님
+      <div className="mb-4 justify-end flex items-center">
+        <p>{username}님</p>
+        <div></div>
+        <button className="top-4 right-4 bg-gray-500 rounded-md p-2 text-white"
+                onClick={changePwpage}>
+          비밀번호 변경
+        </button>
       </div>
       <div className="grid grid-cols-5 gap-4">
         {bikes.map((bike, index) => (

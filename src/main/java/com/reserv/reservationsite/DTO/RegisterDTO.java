@@ -12,14 +12,11 @@ public class RegisterDTO {
 
     private String username;
 
-    private String name;
-
     private String password;
 
     public Member toEntity() {
         return Member.builder()
                 .username(username)
-                .name(name)
                 .password(password)
                 .isAdmin(Role.USER)
                 .build();

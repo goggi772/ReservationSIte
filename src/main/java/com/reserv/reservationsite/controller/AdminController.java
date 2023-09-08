@@ -32,7 +32,7 @@ public class AdminController {
 
     }
 
-    @PostMapping("/modifying")
+    /*@PostMapping("/modifying")
     public void member_modifying(@RequestParam(value = "name") String name, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
         try {
             String username = userDetails.getUsername();
@@ -40,7 +40,7 @@ public class AdminController {
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
-    }
+    }*/
 
     @PostMapping("/resetPassword")
     public void reset_password(@AuthenticationPrincipal UserDetails userDetails) throws Exception {

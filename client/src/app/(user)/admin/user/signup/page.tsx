@@ -11,9 +11,8 @@ const SignupPage = () => {
 
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;
-    const name = formData.get("name") as string;
 
-    const status = await postSignup(username, password, name);
+    const status = await postSignup(username, password);
     if (status === 201) alert("회원가입 완료");
     else if (status === 400) alert("아이디가 겹칩니다.");
     else alert("internal server error");

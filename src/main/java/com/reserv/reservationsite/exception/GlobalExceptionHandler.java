@@ -17,5 +17,8 @@ public class GlobalExceptionHandler {
         return ErrorResponse.toResponseEntity(exception.getErrorCode());
     }
 
-
+    @ExceptionHandler(NotEqualsPasswordException.class)
+    public ResponseEntity<ErrorResponse> handleNotEqualsPasswordException(NotEqualsPasswordException exception) {
+        return ErrorResponse.toResponseEntity(exception.getErrorCode());
+    }
 }

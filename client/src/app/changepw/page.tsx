@@ -13,15 +13,28 @@ const ChangePwPage = () => {
   const [checkPassword, setCheckPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
+  const router = useRouter();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-      const response = await changePW(oldPassword, newPassword);
 
     if (newPassword != checkPassword) {
       setNewPassword("");
       setCheckPassword("");
       setError("입력한 새 비밀번호가 일치하지 않습니다.")
+      return;
+    }
+    const response = await changePW(oldPassword, newPassword);
+
+    if (response.status === 200) {
+      alert("비밀번호가 변경되었습니다.");
+      router.push("/reservation");
+      return;
+    } else if (response.status === 401) {
+      setOldPassword("");
+      setNewPassword("");
+      setCheckPassword("");
+      setError("현재 비밀번호가 일치하지 않습니다.");
+      return;
     }
 
   };

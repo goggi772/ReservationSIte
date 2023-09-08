@@ -1,9 +1,11 @@
 package com.reserv.reservationsite.controller;
 
+import com.reserv.reservationsite.DTO.ChangePwDTO;
 import com.reserv.reservationsite.DTO.LoginDTO;
 import com.reserv.reservationsite.DTO.MemberDTO;
 import com.reserv.reservationsite.DTO.TokenInfo;
 import com.reserv.reservationsite.core.entity.Role;
+import com.reserv.reservationsite.exception.ErrorResponse;
 import com.reserv.reservationsite.service.MemberDetails;
 import com.reserv.reservationsite.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -34,10 +36,13 @@ public class MemberController {
         return memberService.login(dto.getUsername(), dto.getPassword());
     }
 
-    /*@PostMapping("/changePw")
-    public void changePw(@RequestParam String oldPassword, @RequestParam ) {
-
-    }*/
+    @PostMapping("/changePw")
+    public ResponseEntity<ErrorResponse> changePw(@AuthenticationPrincipal UserDetails userDetails,
+                                                  @RequestBody ChangePwDTO dto) {
+        System.out.println(dto.getNewPassword());
+        System.out.println(dto.getOldPassword());
+        return memberService.change_password(userDetails.getUsername(), dto.getOldPassword(), dto.getNewPassword());
+    }
 
     @GetMapping("/get/user")
     public MemberDTO get_username(@AuthenticationPrincipal UserDetails userDetails) {

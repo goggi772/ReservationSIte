@@ -16,9 +16,6 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 5)
-    private String name;
-
     @Column(nullable = false, length = 15, unique = true)
     private String username;
 
@@ -29,13 +26,9 @@ public class Member {
     @Column(nullable = false)
     private Role isAdmin;
 
-
-    public void modi_username(String name) {
-        this.name = name;
-    }
-
-    public void reset_pass(String password) {
+    public void reset_change_pass(String password) {
         this.password = password;
     }
+
 
 }

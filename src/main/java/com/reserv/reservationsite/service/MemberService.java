@@ -6,9 +6,12 @@ import com.reserv.reservationsite.DTO.TokenInfo;
 import com.reserv.reservationsite.core.entity.Member;
 import com.reserv.reservationsite.core.repository.MemberRepository;
 import com.reserv.reservationsite.exception.ErrorCode;
+import com.reserv.reservationsite.exception.ErrorResponse;
+import com.reserv.reservationsite.exception.NotEqualsPasswordException;
 import com.reserv.reservationsite.exception.NotFoundUserException;
 import com.reserv.reservationsite.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -54,19 +57,30 @@ public class MemberService {
         memberRepository.save(dto.toEntity());
     }
 
-    @Transactional
+    /*@Transactional
     public void modifying(String name, String username) {
         Member member = memberRepository.findByUsername(username).orElseThrow(() ->
                 new NotFoundUserException(ErrorCode.NOT_EXIST_USER));
         member.modi_username(name);
         memberRepository.save(member);
+    }*/
+
+    @Transactional
+    public ResponseEntity<ErrorResponse> change_password(String username, String oldPassword, String newPassword) {
+        Member member = memberRepository.findByUsername(username).orElseThrow(() ->
+                new NotFoundUserException(ErrorCode.NOT_EXIST_USER));
+        if (bCryptPasswordEncoder.matches(oldPassword, member.getPassword())) {
+            member.reset_change_pass(bCryptPasswordEncoder.encode(newPassword));
+            memberRepository.save(member);
+            return ErrorResponse.toResponseEntity(ErrorCode.STATUS_OK);  //비밀번호 변경 성공
+        } else throw new NotEqualsPasswordException(ErrorCode.INCORRECT_ID_PASSWORD);  //비밀번호 일치하지 않음
     }
 
     @Transactional
     public void reset_password(String username) {
         Member member = memberRepository.findByUsername(username).orElseThrow(() ->
                 new NotFoundUserException(ErrorCode.NOT_EXIST_USER));
-        member.reset_pass(bCryptPasswordEncoder.encode("0000"));
+        member.reset_change_pass(bCryptPasswordEncoder.encode("0000"));
         memberRepository.save(member);
     }
 
