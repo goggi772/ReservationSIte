@@ -55,25 +55,8 @@ public class BikeService {
         else throw new ReservationNotAvailableException(ErrorCode.DISABLED_BIKE);  //이용 불가능한 자리
     }
 
-    @Scheduled(cron = "0 5 8,9,10 ? * MON-FRI", zone = "Asia/Seoul")
-    public void reset_bike() {  //월~금 8시5분, 9시5분, 10시 5분에 bike entity 초기화
-        bikeRepository.resetBike();
-        log.info("Bike Entity 초기화 완료");
-    }
-
-    @Scheduled(cron = "0 25 18,19,20,21 ? * MON-FRI", zone = "Asia/Seoul")
-    public void reset_bike2() {   //월~금 6시25분, 7시25분, 8시25분, 9시25분에 bike entity 초기화
-        bikeRepository.resetBike();
-        log.info("Bike Entity 초기화 완료");
-    }
-
-
     public List<Bike> findAllBikes() {
         return bikeRepository.findAllByOrderByIdAsc();
-    }
-
-    public int test() {
-        return memberRepository.updateAllByIsReserved(true);
     }
 
 }

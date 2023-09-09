@@ -38,15 +38,9 @@ public class BikeController {
             String username = userDetails.getUsername();
             return bikeService.reservation(dto, username);
         } catch (ReservationNotAvailableException e) {
-            System.out.println(e.getErrorCode());
             return ErrorResponse.toResponseEntity(e.getErrorCode());
         } catch (Exception e) {
             return ErrorResponse.toResponseEntity(ErrorCode.RESERVE_ONLY_ONE_BIKE);  //하나의 자리만 예약가능(db unique로)
         }
-    }
-
-    @PostMapping("/test")
-    public int test() {
-        return bikeService.test();
     }
 }

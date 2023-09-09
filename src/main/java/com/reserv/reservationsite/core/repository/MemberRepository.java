@@ -15,9 +15,14 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByUsername(String username);
 
-//    @Modifying
-//    @Transactional
-//    @Query("UPDATE Member SET Member.isReserved =:isReserved WHERE Member.username IN (SELECT b.owner FROM Bike b)")
-//    int updateAllByIsReserved(@Param("isReserved") boolean isReserved);
+    @Modifying
+    @Transactional
+    @Query("UPDATE Member m SET m.isReserved = :reserved WHERE m.username IN (SELECT b.owner FROM Bike b)")
+    int updateAllByIsReserved(@Param("reserved") boolean reserved);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Member m SET m.isReserved = false WHERE m.isReserved = true")
+    int resetIsReserved();
 
 }

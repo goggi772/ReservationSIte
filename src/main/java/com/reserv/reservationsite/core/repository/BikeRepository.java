@@ -21,7 +21,7 @@ public interface BikeRepository extends JpaRepository<Bike, Long> {
     @Modifying
     @Transactional
     @Query("UPDATE Bike set owner = null, status = 'available' WHERE status != 'disabled'")
-    void resetBike();
+    int resetBike();
 
 
 }
