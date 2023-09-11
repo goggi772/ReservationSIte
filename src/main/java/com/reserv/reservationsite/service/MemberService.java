@@ -52,9 +52,14 @@ public class MemberService {
     }
 
     @Transactional
-    public void register(RegisterDTO dto) {
-        dto.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
-        memberRepository.save(dto.toEntity());
+    public ResponseEntity<ErrorResponse> register(RegisterDTO dto) {
+        if (memberRepository.findByUsername(dto.getUsername()).isPresent()) {
+            return ErrorResponse.toResponseEntity(ErrorCode.ALREADY_EXIST_USERNAME);
+        } else {
+            dto.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
+//            memberRepository.save(dto.toEntity());
+            return ErrorResponse.toResponseEntity(ErrorCode.STATUS_OK);
+        }
     }
 
     /*@Transactional

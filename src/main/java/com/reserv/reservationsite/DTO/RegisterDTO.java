@@ -1,5 +1,6 @@
 package com.reserv.reservationsite.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.reserv.reservationsite.core.entity.Member;
 import com.reserv.reservationsite.core.entity.Role;
 import lombok.*;
@@ -14,9 +15,8 @@ public class RegisterDTO {
 
     private String password;
 
+    @JsonProperty("isVIP")
     private boolean isVIP;
-
-    private boolean isReserved;
 
     public Member toEntity() {
         return Member.builder()

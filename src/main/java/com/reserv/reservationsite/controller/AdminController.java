@@ -2,8 +2,11 @@ package com.reserv.reservationsite.controller;
 
 import com.reserv.reservationsite.DTO.RegisterDTO;
 import com.reserv.reservationsite.core.entity.Role;
+import com.reserv.reservationsite.exception.ErrorCode;
+import com.reserv.reservationsite.exception.ErrorResponse;
 import com.reserv.reservationsite.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,13 +24,12 @@ public class AdminController {
     private final MemberService memberService;
 
     @PostMapping("/register")
-    public void register(HttpServletResponse response, @RequestBody RegisterDTO dto) throws Exception {
+    public ResponseEntity<ErrorResponse> register(@RequestBody RegisterDTO dto) throws Exception {
 
         try {
-            memberService.register(dto);
-            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            return memberService.register(dto);
         } catch (Exception e) {
-            throw new Exception(e.getMessage());
+            return ErrorResponse.toResponseEntity(ErrorCode.ALREADY_EXIST_USERNAME);
         }
 
     }

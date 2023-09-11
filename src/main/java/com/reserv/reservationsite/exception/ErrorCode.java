@@ -23,6 +23,7 @@ public enum ErrorCode {
     RESERVATION_ONLY_ONCE_A_DAY(BAD_REQUEST, "하루에 한 타임만 이용하실 수 있습니다."),
     NOT_EXIST_BIKE(BAD_REQUEST, "존재하지 않는 자리입니다."),
     NOT_EXIST_USER(BAD_REQUEST, "존재하지 않는 유저입니다."),
+    ALREADY_EXIST_USERNAME(BAD_REQUEST, "존재하는 이름입니다."),
     RESERVATION_NOT_POSSIBLE(BAD_REQUEST, "예약 가능한 시간이 아닙니다."),
 
     // 401 UNAUTHORIZED

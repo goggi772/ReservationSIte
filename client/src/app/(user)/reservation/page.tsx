@@ -35,13 +35,11 @@ const SeatsPage = () => {
       const { message } = data;
       alert(message);
       setBikes(newBikes);
-      window.location.reload();
       return;
     } else if (res.status === 400) {
       const data = await res.json();
       const { message } = data;
       alert(message);
-      window.location.reload();
       return;
     } else if (res.status === 403) {
       alert("예약 가능한 시간이 아닙니다.");
