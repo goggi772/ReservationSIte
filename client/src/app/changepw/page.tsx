@@ -1,6 +1,6 @@
 "use client";
 
-import {changePW} from "@/routes/route";
+import {changePW, getLogout} from "@/routes/route";
 import { useState } from "react";
 import WithAuthOnly from "@/components/hoc/WithAuthOnly";
 import { useRouter } from "next/navigation";
@@ -38,6 +38,10 @@ const ChangePwPage = () => {
     }
 
   };
+  const onClickBtn = async () => {
+      router.push("/reservation");
+  };
+
   return (
       <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="p-12 bg-white rounded shadow-lg w-96">
@@ -98,6 +102,13 @@ const ChangePwPage = () => {
                 className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
             >
               변경
+            </button>
+            <div className="mb-4"></div>
+            <button
+                onClick={onClickBtn}
+                className="w-full bg-gray-500 rounded-md p-2 text-white hover:bg-gray-600"
+            >
+              예약화면으로
             </button>
           </form>
         </div>

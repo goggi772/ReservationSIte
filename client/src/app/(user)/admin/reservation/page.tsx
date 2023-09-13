@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { cloneDeep } from "lodash";
 
 import BikeForAdmin from "@/components/BikeForAdmin";
-import { getBikes, putCancleBook, putDeleteBook } from "@/routes/route";
+import { getBikes, putCancelBook, putDeleteBook } from "@/routes/route";
 import { IBike } from "@/interface/interface";
 import BikeInfoModal from "@/components/BikeInfoModal";
 import WithAdminOnly from "@/components/hoc/WithAdminOnly";
@@ -25,9 +25,9 @@ const SeatsPage = () => {
     setModalOpen(true);
   };
 
-  const handleCancleBook = async () => {
-    if (!bike) return;
-    const res = await putCancleBook(bike.id, bike.status);
+  const handleCancelBook = async () => {
+    if (bike?.owner == null) return;
+    const res = await putCancelBook(bike.id);
     if (res.status === 200) {
       const newBikesInfo = [...bikes];
       newBikesInfo[bike.id].status === "available";
@@ -85,12 +85,12 @@ const SeatsPage = () => {
         bike={bike}
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
-        cancelBook={handleCancleBook}
+        cancelBook={handleCancelBook}
         disableBook={handleDisableBook}
       />
 
       <h1 className="text-3xl font-semibold mb-4">Spinning Reservation</h1>
-      <div className="grid grid-cols-6 gap-4">
+      <div className="grid grid-cols-5 gap-4">
         {bikes.map((bike, index) => (
           <BikeForAdmin
             key={bike.id}

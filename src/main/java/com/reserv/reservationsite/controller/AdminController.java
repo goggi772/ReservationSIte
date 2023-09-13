@@ -1,5 +1,6 @@
 package com.reserv.reservationsite.controller;
 
+import com.reserv.reservationsite.DTO.BikeDTO;
 import com.reserv.reservationsite.DTO.RegisterDTO;
 import com.reserv.reservationsite.core.entity.Role;
 import com.reserv.reservationsite.exception.ErrorCode;
@@ -54,5 +55,8 @@ public class AdminController {
         }
     }
 
+    @PostMapping("/reservation/cancel")
+    public void cancel_reservation(BikeDTO dto) {
 
+    }
 }

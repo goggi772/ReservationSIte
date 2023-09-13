@@ -1,8 +1,8 @@
 import SignupBtn from "@/components/SignupBtn";
-import LogoutBtn from "@/components/LogoutBtn";
 import AdminHomeBtn from "@/components/AdminHomeBtn";
+import LogoutBtn from "@/components/LogoutBtn";
 
-export default function UserLayout({
+export default function AdminLayout({
     children,
 }: {
     children: React.ReactNode;
@@ -11,6 +11,7 @@ export default function UserLayout({
         <div className="relative">
             <SignupBtn />
             <AdminHomeBtn />
+            <LogoutBtn />
             {children}
         </div>
 

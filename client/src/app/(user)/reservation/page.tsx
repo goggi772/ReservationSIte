@@ -8,6 +8,7 @@ import LogoutBtn from "@/components/LogoutBtn";
 import Cookies from "js-cookie";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
+import {date} from "zod";
 
 const SeatsPage = () => {
   const [bikes, setBikes] = useState<IBike[]>([]);
@@ -35,6 +36,11 @@ const SeatsPage = () => {
       const { message } = data;
       alert(message);
       setBikes(newBikes);
+      if (newBikes[index].status === "available") {
+        newBikes[index].status = "yours";
+      } else if (newBikes[index].status === "yours") {
+        newBikes[index].status = "available";
+      }
       return;
     } else if (res.status === 400) {
       const data = await res.json();
@@ -91,12 +97,30 @@ const SeatsPage = () => {
     router.push("/changepw")
   }
 
+  const spinning_time = () => {
+    const date = new Date;
+    const hour = date.getHours();
+    const min = date.getMinutes();
+
+    if ((hour >= 0 && hour < 9) || (hour == 9 && min <= 5)){
+      return "9시 타임 예약 현황";
+    }
+    else if ((hour == 9 && min > 5) || (hour == 10 && min <= 30)) {
+      return "10시 타임 예약 현황";
+    }
+    else if ((hour == 10 && min > 30) || (hour > 10 && hour < 19) || (hour == 19 && min <= 25)) {
+      return "7시 20분 타임 예약 현황";
+    }
+    else return "8시 20분 타임 예약 현황";
+  }
+
   return (
     <div className="p-8">
       <h1 className="text-3xl font-semibold mb-4">Spinning Reservation</h1>
+      <h2 className="text-xl font-semibold mb-4 text-center">{spinning_time()}</h2>
       <div className="mb-4 justify-end flex items-center">
-        <p>{username}님</p>
-        <div></div>
+        <p className="text-xl">{username}님</p>
+        <div className="ml-4 "></div>
         <button className="top-4 right-4 bg-gray-500 rounded-md p-2 text-white"
                 onClick={changePwpage}>
           비밀번호 변경
