@@ -5,6 +5,8 @@ import com.reserv.reservationsite.DTO.RegisterDTO;
 import com.reserv.reservationsite.core.entity.Role;
 import com.reserv.reservationsite.exception.ErrorCode;
 import com.reserv.reservationsite.exception.ErrorResponse;
+import com.reserv.reservationsite.exception.NotFoundUserException;
+import com.reserv.reservationsite.service.BikeService;
 import com.reserv.reservationsite.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,8 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class AdminController {
 
+    private final BikeService bikeService;
+
     private final MemberService memberService;
 
     @PostMapping("/register")
@@ -29,8 +33,10 @@ public class AdminController {
 
         try {
             return memberService.register(dto);
+        } catch (NotFoundUserException e) {
+            return ErrorResponse.toResponseEntity(e.getErrorCode());
         } catch (Exception e) {
-            return ErrorResponse.toResponseEntity(ErrorCode.ALREADY_EXIST_USERNAME);
+            return ErrorResponse.toResponseEntity(ErrorCode.UNKNOWN_ERROR);
         }
 
     }
@@ -46,17 +52,25 @@ public class AdminController {
     }*/
 
     @PostMapping("/resetPassword")
-    public void reset_password(@AuthenticationPrincipal UserDetails userDetails) throws Exception {
+    public ResponseEntity<ErrorResponse> reset_password(@AuthenticationPrincipal UserDetails userDetails) throws Exception {
         try {
             String username = userDetails.getUsername();
-            memberService.reset_password(username);
+            return memberService.reset_password(username);
+
+        } catch (NotFoundUserException e) {
+            return ErrorResponse.toResponseEntity(e.getErrorCode());
         } catch (Exception e) {
-            throw new Exception(e.getMessage());
+            return ErrorResponse.toResponseEntity(ErrorCode.UNKNOWN_ERROR);
         }
     }
 
-    @PostMapping("/reservation/cancel")
-    public void cancel_reservation(BikeDTO dto) {
+    @PutMapping("/reservation/cancel")
+    public ResponseEntity<ErrorResponse> cancel_reservation(@RequestBody BikeDTO dto) {
+        return bikeService.admin_reservation_cancel(dto);
+    }
 
+    @PutMapping("/reservation/disabled")
+    public void bike_disabled(@RequestBody BikeDTO dto) {
+        bikeService.bike_disabled(dto);
     }
 }

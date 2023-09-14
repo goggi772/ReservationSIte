@@ -29,12 +29,14 @@ const SeatsPage = () => {
     if (bike?.owner == null) return;
     const res = await putCancelBook(bike.id);
     if (res.status === 200) {
-      const newBikesInfo = [...bikes];
-      newBikesInfo[bike.id].status === "available";
-      setBikes(newBikesInfo);
+      // const newBikesInfo = [...bikes];
+      // newBikesInfo[bike.id].status = "available";
 
       alert("취소되었습니다.");
+      // setBikes(newBikesInfo);
       setModalOpen(false);
+      window.location.reload();
+      return;
     } else if (res.status === 400) {
       alert(res.statusText);
     } else {
@@ -44,15 +46,16 @@ const SeatsPage = () => {
 
   const handleDisableBook = async () => {
     if (!bike) return;
-    const res = await putDeleteBook(bike.id, bike.status);
+    const res = await putDeleteBook(bike.id);
+    console.log(bike.id);
     if (res.status === 200) {
       const newBikesInfo = [...bikes];
 
       if (bike.status === "disabled") {
-        newBikesInfo[bike.id].status === "available";
+        newBikesInfo[bike.id].status = "available";
         alert("예약 가능 상태로 전환되었습니다.");
       } else {
-        newBikesInfo[bike.id].status === "disabled";
+        newBikesInfo[bike.id].status = "disabled";
         alert("예약 불가 상태로 전환되었습니다.");
       }
 
@@ -63,16 +66,17 @@ const SeatsPage = () => {
     } else {
       alert("internal server error");
     }
+    return;
   };
 
   useEffect(() => {
     const fetchBikes = async () => {
       const res = await getBikes();
 
-      if (res.status !== 200) {
-        alert("예약 가능 기간이 아닙니다.");
+      if (res.status == 401) {
+        alert("다시 로그인 해주세요.");
         return;
-      }
+      } else
 
       setBikes(await res.json());
     };

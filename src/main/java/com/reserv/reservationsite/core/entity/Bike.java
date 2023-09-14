@@ -26,8 +26,9 @@ public class Bike {
         this.owner = owner;
     }
 
-    public void cancel_reserv() {
-        this.status = BikeStatus.available;
+    public void change_bikeStatus(BikeStatus bikeStatus) {
+        this.status = bikeStatus;
         this.owner = null;
     }
+
 }

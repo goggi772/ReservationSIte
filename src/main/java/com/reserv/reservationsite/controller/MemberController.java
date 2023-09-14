@@ -78,7 +78,6 @@ public class MemberController {
         if (authorities != null && !authorities.isEmpty()) {
             GrantedAuthority firstAuthority = authorities.iterator().next();
             String role = firstAuthority.getAuthority();
-            System.out.println("admin권한이 있나요");
             if ("ROLE_ADMIN".equals(role)) {
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {

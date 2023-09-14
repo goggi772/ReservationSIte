@@ -17,6 +17,7 @@ public enum ErrorCode {
 
     //400 BAD_REQUEST
     INVALID_INPUT_VALUE(BAD_REQUEST, "입력 양식과 맞지않는 입력값입니다."),
+    UNKNOWN_ERROR(BAD_REQUEST, "알 수 없는 오류입니다."),
     ALREADY_RESERVED(BAD_REQUEST, "이미 예약된 자리입니다."),
     RESERVE_ONLY_ONE_BIKE(BAD_REQUEST, "하나의 자리만 예약할 수 있습니다."),
     DISABLED_BIKE(BAD_REQUEST, "이용 불가능한 자리입니다."),
@@ -25,6 +26,7 @@ public enum ErrorCode {
     NOT_EXIST_USER(BAD_REQUEST, "존재하지 않는 유저입니다."),
     ALREADY_EXIST_USERNAME(BAD_REQUEST, "존재하는 이름입니다."),
     RESERVATION_NOT_POSSIBLE(BAD_REQUEST, "예약 가능한 시간이 아닙니다."),
+    ALREADY_CANCEL(BAD_REQUEST, "이미 예약이 취소되었습니다."),
 
     // 401 UNAUTHORIZED
     INVALID_TOKEN(UNAUTHORIZED, "유효하지 않은 토큰입니다."),

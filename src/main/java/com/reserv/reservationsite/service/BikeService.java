@@ -40,14 +40,12 @@ public class BikeService {
             } else {
                 bike.seat_reserv(member.getUsername());
                 bikeRepository.save(bike);
-                memberRepository.save(member);
                 return ErrorResponse.toResponseEntity(ErrorCode.RESERVATION_SUCCESSFUL);
             }
         } else if (bike.getStatus().equals(BikeStatus.completed)){
             if (bike.getOwner().equals(member.getUsername())) {
-                bike.cancel_reserv();
+                bike.change_bikeStatus(BikeStatus.available);
                 bikeRepository.save(bike);
-                memberRepository.save(member);
                 return ErrorResponse.toResponseEntity(ErrorCode.CANCEL_SUCCESSFUL);
             }
             else throw new ReservationNotAvailableException(ErrorCode.ALREADY_RESERVED);  // 이미 예약된 자리
@@ -57,6 +55,30 @@ public class BikeService {
 
     public List<Bike> findAllBikes() {
         return bikeRepository.findAllByOrderByIdAsc();
+    }
+
+    @Transactional
+    public ResponseEntity<ErrorResponse> admin_reservation_cancel(BikeDTO dto) {
+        Bike bike = bikeRepository.findById(dto.getBikeId()).orElseThrow(() ->
+                new ReservationNotAvailableException(ErrorCode.NOT_EXIST_BIKE));
+        if (bike.getStatus().equals(BikeStatus.completed) && bike.getOwner() != null) {
+            bike.change_bikeStatus(BikeStatus.available);
+            bikeRepository.save(bike);
+            return ErrorResponse.toResponseEntity(ErrorCode.CANCEL_SUCCESSFUL);
+        } else throw new ReservationNotAvailableException(ErrorCode.ALREADY_CANCEL);
+    }
+
+    @Transactional
+    public void bike_disabled(BikeDTO dto) {
+        Bike bike = bikeRepository.findById(dto.getBikeId()).orElseThrow(() ->
+                new ReservationNotAvailableException(ErrorCode.NOT_EXIST_BIKE));
+        if (bike.getStatus().equals(BikeStatus.available)) {
+            bike.change_bikeStatus(BikeStatus.disabled);
+            bikeRepository.save(bike);
+        } else if (bike.getStatus().equals(BikeStatus.disabled)) {
+            bike.change_bikeStatus(BikeStatus.available);
+            bikeRepository.save(bike);
+        } else throw new ReservationNotAvailableException(ErrorCode.ALREADY_RESERVED);
     }
 
 }

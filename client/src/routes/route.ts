@@ -164,31 +164,31 @@ export const deleteUser = async (id: string) => {
   return res;
 };
 
-export const putCancelBook = async (bikeID: number) => {
+export const putCancelBook = async (bikeId: number) => {
   const accessToken = Cookies.get('accessToken');
-  const res = await fetch(serverURL + "/cancel", {
+  const res = await fetch(serverURL + "/admin/reservation/cancel", {
     method: "PUT",
     credentials: "include",
     headers: {
       "Authorization": `Bearer ${accessToken}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ bikeID, status }),
+    body: JSON.stringify({ bikeId }),
   });
 
   return res;
 };
 
-export const putDeleteBook = async (bikeID: number, status: string) => {
+export const putDeleteBook = async (bikeId: number) => {
   const accessToken = Cookies.get('accessToken');
-  const res = await fetch(serverURL, {
+  const res = await fetch(serverURL + "/admin/reservation/disabled", {
     method: "PUT",
     credentials: "include",
     headers: {
       "Authorization": `Bearer ${accessToken}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ bikeID }),
+    body: JSON.stringify({ bikeId }),
   });
 
   return res;
@@ -225,7 +225,6 @@ export const getCheckAdmin = async () => {
       "Content-Type": "application/json",
     },
   });
-  console.log("어드민" + accessToken);
 
   if (res.status === 200) {
     return true;

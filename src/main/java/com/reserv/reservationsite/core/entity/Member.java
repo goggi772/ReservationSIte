@@ -22,7 +22,7 @@ public class Member {
     @Column(nullable = false, length = 20)
     private String password;
 
-    @Column
+    @Column(nullable = false)
     private boolean isReserved;  //예약을 적어도 한번 했는지
 
     @Column(nullable = false)
@@ -36,9 +36,6 @@ public class Member {
         this.password = password;
     }
 
-    public void set_isReserved(boolean isReserved) {
-        this.isReserved = isReserved;
-    }
 
 
 }

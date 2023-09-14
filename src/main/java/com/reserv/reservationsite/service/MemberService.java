@@ -54,10 +54,10 @@ public class MemberService {
     @Transactional
     public ResponseEntity<ErrorResponse> register(RegisterDTO dto) {
         if (memberRepository.findByUsername(dto.getUsername()).isPresent()) {
-            return ErrorResponse.toResponseEntity(ErrorCode.ALREADY_EXIST_USERNAME);
+            throw new NotFoundUserException(ErrorCode.ALREADY_EXIST_USERNAME);
         } else {
             dto.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
-//            memberRepository.save(dto.toEntity());
+            memberRepository.save(dto.toEntity());
             return ErrorResponse.toResponseEntity(ErrorCode.STATUS_OK);
         }
     }
@@ -82,11 +82,12 @@ public class MemberService {
     }
 
     @Transactional
-    public void reset_password(String username) {
+    public ResponseEntity<ErrorResponse> reset_password(String username) {
         Member member = memberRepository.findByUsername(username).orElseThrow(() ->
                 new NotFoundUserException(ErrorCode.NOT_EXIST_USER));
         member.reset_change_pass(bCryptPasswordEncoder.encode("0000"));
         memberRepository.save(member);
+        return ErrorResponse.toResponseEntity(ErrorCode.STATUS_OK);
     }
 
     public MemberDTO findByMember(String username) {

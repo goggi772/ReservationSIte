@@ -36,7 +36,6 @@ const LoginPage = () => {
     } else if (response.status === 500) {
       alert("Internal Server Error!");
     } else {
-      console.log("실패: " + response.status)
       setPassword("");
       setError("아이디나 비밀번호가 다릅니다.");
     }
