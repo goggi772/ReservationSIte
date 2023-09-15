@@ -22,6 +22,9 @@ public class Member {
     @Column(nullable = false, length = 20)
     private String password;
 
+    @Column(nullable = false, length = 15)
+    private String phoneNumber;
+
     @Column(nullable = false)
     private boolean isReserved;  //예약을 적어도 한번 했는지
 

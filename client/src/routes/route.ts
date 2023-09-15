@@ -232,3 +232,17 @@ export const getCheckAdmin = async () => {
     return false;
   }
 };
+
+export const getIUser = async (pageNo: number, pageSize: number) => {
+  const accessToken = Cookies.get('accessToken');
+  const res = await fetch(serverURL + `/admin/member/view?pageNo=${pageNo}&pageSize=${pageSize}`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Authorization": `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  return res;
+};

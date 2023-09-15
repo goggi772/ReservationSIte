@@ -11,6 +11,8 @@ import com.reserv.reservationsite.exception.NotEqualsPasswordException;
 import com.reserv.reservationsite.exception.NotFoundUserException;
 import com.reserv.reservationsite.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -95,6 +97,9 @@ public class MemberService {
                 new NotFoundUserException(ErrorCode.NOT_EXIST_USER));
     }
 
+    public Page<MemberDTO> get_member_info(Pageable pageable) {
+        return memberRepository.findAll(pageable).map(MemberDTO::new);
+    }
 
 
 

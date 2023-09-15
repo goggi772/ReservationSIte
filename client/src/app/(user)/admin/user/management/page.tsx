@@ -20,7 +20,7 @@ const ManagementUserPage = () => {
       const user: IUser = await res.json();
 
       id = user.id;
-      setNewName(user.name);
+      // setNewName(user.name);
       setIsSearched(true);
     } else if (res.status === 400) {
       alert("읎는거같은뎁숑?");

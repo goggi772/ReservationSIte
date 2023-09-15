@@ -10,10 +10,10 @@ export interface IAdminBikeProps extends IBikeProps {
 
 export interface IUser {
   id: string;
-  name: string;
   username: string;
-  isAdmin: string;
-  // isReserved: string;
+  phoneNumber: string;
+  isReserved: boolean;
+  isVIP: boolean;
 }
 
 export interface IBike {

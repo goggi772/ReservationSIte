@@ -13,9 +13,16 @@ public class MemberDTO {
 
     private String username;
 
-    private String name;
+    private String phoneNumber;
+
+    private boolean isReserved;
+
+    private boolean isVIP;
 
     public MemberDTO(Member member) {
         this.username = member.getUsername();
+        this.phoneNumber = member.getPhoneNumber();
+        this.isReserved = member.isReserved();
+        this.isVIP = member.isVIP();
     }
 }
