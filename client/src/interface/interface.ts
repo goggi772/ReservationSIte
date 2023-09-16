@@ -12,12 +12,18 @@ export interface IUser {
   id: string;
   username: string;
   phoneNumber: string;
-  isReserved: boolean;
-  isVIP: boolean;
+  reserved: boolean;
+  vip: boolean;
 }
 
 export interface IBike {
   id: number;
   status: "available" | "completed" | "disabled" | "yours";
   owner: string | null;
+}
+
+export interface PaginationProps {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
 }

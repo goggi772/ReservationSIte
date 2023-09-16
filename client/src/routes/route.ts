@@ -80,6 +80,7 @@ export const putBikeInfo = async (bikeId: number) => {
 export const postSignup = async (
   username: string,
   password: string,
+  phoneNumber: string,
   isVIP: boolean
 ) => {
   const accessToken = Cookies.get('accessToken');
@@ -90,7 +91,7 @@ export const postSignup = async (
       "Authorization": `Bearer ${accessToken}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ username, password, isVIP }),
+    body: JSON.stringify({ username, password, phoneNumber, isVIP }),
   });
 
   return res.status;
@@ -124,7 +125,7 @@ export const putUserName = async (id: string, newName: string) => {
   return res;
 };
 
-export const putUserPW = async (id: string) => {
+export const putUserPW = async (username: string) => {
   const accessToken = Cookies.get('accessToken');
   return await fetch(serverURL, {
     method: "PUT",
@@ -133,7 +134,7 @@ export const putUserPW = async (id: string) => {
       "Authorization": `Bearer ${accessToken}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({id}),
+    body: JSON.stringify({username}),
   });
 };
 

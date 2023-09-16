@@ -15,6 +15,8 @@ public class RegisterDTO {
 
     private String password;
 
+    private String phoneNumber;
+
     @JsonProperty("isVIP")
     private boolean isVIP;
 
@@ -22,6 +24,7 @@ public class RegisterDTO {
         return Member.builder()
                 .username(username)
                 .password(password)
+                .phoneNumber(phoneNumber)
                 .isAdmin(Role.USER)
                 .isVIP(isVIP)
                 .isReserved(false)

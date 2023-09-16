@@ -10,31 +10,57 @@ import {boolean} from "zod";
 const SignupPage = () => {
 
   const [error, setError] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    phoneNumber: "",
+    isVIP: false,
+  });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formData = new FormData(e.currentTarget);
+    // const formData = new FormData(e.currentTarget);
 
-    const username = formData.get("username") as string;
-    const password = formData.get("password") as string;
-    const isVIP = formData.has("isVIP");
+    // const username = formData.get("username") as string;
+    // const password = formData.get("password") as string;
+    // const phoneNumber = formData.get("phoneNumber") as string;
+    // const isVIP = formData.has("isVIP");
 
-    if (username == "" || password == "") {
+    if (formData.username == "" || formData.password == "") {
       setError("필수 입력 사항 입니다.");
       return;
     }
 
-    const status = await postSignup(username, password, isVIP);
+    const status = await postSignup(formData.username, formData.password, formData.phoneNumber, formData.isVIP);
     if (status === 200) {
       alert("회원가입 완료");
-      window.location.reload();
+      setFormData({
+        username: "",
+        password: "",
+        phoneNumber: "",
+        isVIP: false,
+      });
     }
     else if (status === 400){
       setError("이미 존재하는 이름입니다.");
       return;
     }
     else alert("internal server error");
+  };
+
+  const handleInputChange = (
+      e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value} = e.currentTarget;
+    const type = e.currentTarget.type;
+    const checked = e.currentTarget.ariaChecked;
+    const inputValue = type === "checkbox" ? checked : value;
+
+    setFormData({
+      ...formData,
+      [name]: inputValue,
+    });
   };
 
   return (
@@ -53,10 +79,28 @@ const SignupPage = () => {
               type="text"
               id="username"
               name="username"
+              value={formData.username}
+              onChange={handleInputChange}
               className="mt-1 p-2 w-full border rounded-md"
             />
           </div>
           {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
+          <div className="mb-4">
+            <label
+                className="block text-sm font-medium text-black"
+                htmlFor="phoneNumber"
+            >
+              UserNumber
+            </label>
+            <input
+                type="text"
+                id="phoneNumber"
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={handleInputChange}
+                className="mt-1 p-2 w-full border rounded-md"
+            />
+          </div>
           <div className="mb-4">
             <label
               className="block text-sm font-medium text-black"
@@ -68,6 +112,8 @@ const SignupPage = () => {
               type="password"
               id="password"
               name="password"
+              value={formData.password}
+              onChange={handleInputChange}
               className="mt-1 p-2 w-full border rounded-md"
             />
           </div>
@@ -82,6 +128,8 @@ const SignupPage = () => {
               type="checkbox"
               id="isVIP"
               name="isVIP"
+              checked={formData.isVIP}
+              onChange={handleInputChange}
             />
           </div>
           <button

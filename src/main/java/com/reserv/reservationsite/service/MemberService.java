@@ -56,8 +56,10 @@ public class MemberService {
     @Transactional
     public ResponseEntity<ErrorResponse> register(RegisterDTO dto) {
         if (memberRepository.findByUsername(dto.getUsername()).isPresent()) {
+            System.out.println("존재함");
             throw new NotFoundUserException(ErrorCode.ALREADY_EXIST_USERNAME);
         } else {
+            System.out.println("존재하지 않음");
             dto.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
             memberRepository.save(dto.toEntity());
             return ErrorResponse.toResponseEntity(ErrorCode.STATUS_OK);
