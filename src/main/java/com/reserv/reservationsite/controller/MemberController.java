@@ -58,6 +58,7 @@ public class MemberController {
         if (authorities != null && !authorities.isEmpty()) {
             GrantedAuthority firstAuthority = authorities.iterator().next();
             String role = firstAuthority.getAuthority();
+            System.out.println("유저인지 확인중");
             if ("ROLE_USER".equals(role)) {
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {
@@ -78,6 +79,7 @@ public class MemberController {
         if (authorities != null && !authorities.isEmpty()) {
             GrantedAuthority firstAuthority = authorities.iterator().next();
             String role = firstAuthority.getAuthority();
+            System.out.println("관리자인지 확인중");
             if ("ROLE_ADMIN".equals(role)) {
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {

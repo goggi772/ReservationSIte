@@ -94,6 +94,11 @@ public class MemberService {
         return ErrorResponse.toResponseEntity(ErrorCode.STATUS_OK);
     }
 
+    @Transactional
+    public void delete_user_info(String username) {
+        memberRepository.deleteByUsername(username);
+    }
+
     public MemberDTO findByMember(String username) {
         return memberRepository.findByUsername(username).map(MemberDTO::new).orElseThrow(() ->
                 new NotFoundUserException(ErrorCode.NOT_EXIST_USER));

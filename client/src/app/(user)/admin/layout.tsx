@@ -1,7 +1,7 @@
-import SignupBtn from "@/components/SignupBtn";
-import AdminHomeBtn from "@/components/AdminHomeBtn";
-import LogoutBtn from "@/components/LogoutBtn";
-import UserInfoBtn from "@/components/UserInfoBtn";
+import SignupBtn from "@/components/button/SignupBtn";
+import AdminHomeBtn from "@/components/button/AdminHomeBtn";
+import LogoutBtn from "@/components/button/LogoutBtn";
+import UserInfoBtn from "@/components/button/UserInfoBtn";
 
 export default function AdminLayout({
     children,

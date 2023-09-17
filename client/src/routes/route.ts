@@ -127,14 +127,15 @@ export const putUserName = async (id: string, newName: string) => {
 
 export const putUserPW = async (username: string) => {
   const accessToken = Cookies.get('accessToken');
-  return await fetch(serverURL, {
-    method: "PUT",
+  return await fetch(serverURL + "/admin/resetPassword", {
+    method: "POST",
     credentials: "include",
     headers: {
       "Authorization": `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
+      "Content-Type": "text/plain",
     },
-    body: JSON.stringify({username}),
+    // body: JSON.stringify({username}),
+    body: username,
   });
 };
 
@@ -151,15 +152,16 @@ export const changePW = async (oldPassword: string, newPassword: string) => {
   });
 };
 
-export const deleteUser = async (id: string) => {
+export const deleteUser = async (username: string) => {
   const accessToken = Cookies.get('accessToken');
-  const res = await fetch(serverURL, {
+  const res = await fetch(serverURL + "/admin/delete", {
     method: "DELETE",
     credentials: "include",
     headers: {
-      "Content-Type": "application/json",
+      "Authorization": `Bearer ${accessToken}`,
+      "Content-Type": "text/plain",
     },
-    body: JSON.stringify({ id }),
+    body: username,
   });
 
   return res;

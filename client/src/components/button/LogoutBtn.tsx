@@ -14,6 +14,7 @@ const LogoutBtn = () => {
     if (status === 204) {
       Cookies.remove("accessToken");
       Cookies.remove("refreshToken");
+      alert("로그아웃 되었습니다.")
       router.push("/login");
     }
   };

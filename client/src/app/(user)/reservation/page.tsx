@@ -4,7 +4,7 @@ import {getBikes, getLogout, getUsername, putBikeInfo} from "@/routes/route";
 import { IBike } from "@/interface/interface";
 import BikeForUser from "@/components/BikeForUser";
 import WithAuthOnly from "@/components/hoc/WithAuthOnly";
-import LogoutBtn from "@/components/LogoutBtn";
+import LogoutBtn from "@/components/button/LogoutBtn";
 import Cookies from "js-cookie";
 import {useRouter} from "next/navigation";
 import Link from "next/link";

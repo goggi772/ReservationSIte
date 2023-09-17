@@ -43,20 +43,10 @@ public class AdminController {
 
     }
 
-    /*@PostMapping("/modifying")
-    public void member_modifying(@RequestParam(value = "name") String name, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
-        try {
-            String username = userDetails.getUsername();
-            memberService.modifying(name, username);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
-    }*/
-
     @PostMapping("/resetPassword")
-    public ResponseEntity<ErrorResponse> reset_password(@AuthenticationPrincipal UserDetails userDetails) throws Exception {
+    public ResponseEntity<ErrorResponse> reset_password(@RequestBody String username) throws Exception {
         try {
-            String username = userDetails.getUsername();
+            System.out.println(username);
             return memberService.reset_password(username);
 
         } catch (NotFoundUserException e) {
@@ -64,6 +54,17 @@ public class AdminController {
         } catch (Exception e) {
             return ErrorResponse.toResponseEntity(ErrorCode.UNKNOWN_ERROR);
         }
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<ErrorResponse> delete_user(@RequestBody String username) {
+        try {
+            memberService.delete_user_info(username);
+            return ErrorResponse.toResponseEntity(ErrorCode.STATUS_OK);
+        } catch (Exception e) {
+            return ErrorResponse.toResponseEntity(ErrorCode.NOT_EXIST_USER);
+        }
+
     }
 
     @PutMapping("/reservation/cancel")
