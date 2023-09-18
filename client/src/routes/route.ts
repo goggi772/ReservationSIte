@@ -236,9 +236,9 @@ export const getCheckAdmin = async () => {
   }
 };
 
-export const getIUser = async (pageNo: number, pageSize: number) => {
+export const getIUser = async () => {
   const accessToken = Cookies.get('accessToken');
-  const res = await fetch(serverURL + `/admin/member/view?pageNo=${pageNo}&pageSize=${pageSize}`, {
+  const res = await fetch(serverURL + `/admin/member/view`, {
     method: "GET",
     credentials: "include",
     headers: {

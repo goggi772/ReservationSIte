@@ -3,12 +3,14 @@ package com.reserv.reservationsite.core.repository;
 import com.reserv.reservationsite.core.entity.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
@@ -25,7 +27,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("UPDATE Member m SET m.isReserved = false WHERE m.isReserved = true")
     int resetIsReserved();
 
-    Page<Member> findAll(Pageable page);
+    @Override
+    List<Member> findAll(Sort sort);
+
 
     void deleteByUsername(String username);
 

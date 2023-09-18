@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
@@ -78,9 +79,7 @@ public class AdminController {
     }
 
     @GetMapping("/member/view")
-    public Page<MemberDTO> get_page_member(@RequestParam Integer pageNo,
-                                           @RequestParam Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
-        return memberService.get_member_info(pageable);
+    public List<MemberDTO> get_page_member() {
+        return memberService.get_member_info();
     }
 }
