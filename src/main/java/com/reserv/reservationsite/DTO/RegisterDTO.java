@@ -3,6 +3,7 @@ package com.reserv.reservationsite.DTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.reserv.reservationsite.core.entity.Member;
 import com.reserv.reservationsite.core.entity.Role;
+import com.reserv.reservationsite.core.entity.isReserved;
 import lombok.*;
 
 @Getter
@@ -27,7 +28,7 @@ public class RegisterDTO {
                 .phoneNumber(phoneNumber)
                 .isAdmin(Role.USER)
                 .isVIP(isVIP)
-                .isReserved(false)
+                .isReserved(isReserved.NOT_RESERVED)
                 .build();
     }
 }

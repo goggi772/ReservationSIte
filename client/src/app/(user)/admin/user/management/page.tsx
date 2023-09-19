@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { IUser } from "@/interface/interface";
-import { deleteUser, getUserByUseranme, putUserName } from "@/routes/route";
+import { deleteUser, getUserByUsername, putUserName } from "@/routes/route";
 import WithAdminOnly from "@/components/hoc/WithAdminOnly";
 
 const ManagementUserPage = () => {
@@ -15,7 +15,7 @@ const ManagementUserPage = () => {
   let id: string;
 
   const handleSearch = async () => {
-    const res = await getUserByUseranme(username);
+    const res = await getUserByUsername(username);
     if (res.status === 200) {
       const user: IUser = await res.json();
 

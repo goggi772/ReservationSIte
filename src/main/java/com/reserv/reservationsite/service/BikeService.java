@@ -4,6 +4,7 @@ import com.reserv.reservationsite.DTO.BikeDTO;
 import com.reserv.reservationsite.core.entity.Bike;
 import com.reserv.reservationsite.core.entity.BikeStatus;
 import com.reserv.reservationsite.core.entity.Member;
+import com.reserv.reservationsite.core.entity.isReserved;
 import com.reserv.reservationsite.core.repository.MemberRepository;
 import com.reserv.reservationsite.core.repository.BikeRepository;
 import com.reserv.reservationsite.exception.ErrorCode;
@@ -35,7 +36,7 @@ public class BikeService {
         Member member = memberRepository.findByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException("존재하지 않는 유저입니다."));
         if (bike.getStatus().equals(BikeStatus.available)) {   //자리가 AVAILABLE일 때
-            if (member.isReserved() && !member.isVIP()) {  //하루에 한번 예약 가능
+            if (!member.getIsReserved().equals(isReserved.NOT_RESERVED) && !member.isVIP()) {  //하루에 한번 예약 가능
                     throw new ReservationNotAvailableException(ErrorCode.RESERVATION_ONLY_ONCE_A_DAY);
             } else {
                 bike.seat_reserv(member.getUsername());

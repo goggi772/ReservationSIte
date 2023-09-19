@@ -31,7 +31,6 @@ public class BikeController {
     }
 
 
-    @Cacheable(value = "isReserved")
     @PutMapping("/reservation")
     public ResponseEntity<ErrorResponse> reservation(@AuthenticationPrincipal UserDetails userDetails, @RequestBody BikeDTO dto, HttpServletResponse response) {
         try {

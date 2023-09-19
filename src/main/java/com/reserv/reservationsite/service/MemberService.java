@@ -24,6 +24,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -109,8 +110,8 @@ public class MemberService {
     }
 
     public List<MemberDTO> get_member_info() {
-        return memberRepository.findAll().stream().map(MemberDTO::new).
-                collect(Collectors.toList());
+        return memberRepository.findAll(Sort.by(Sort.Direction.ASC, "username")).stream().map(MemberDTO::new)
+                .collect(Collectors.toList());
     }
 
 

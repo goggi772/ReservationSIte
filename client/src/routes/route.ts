@@ -97,7 +97,7 @@ export const postSignup = async (
   return res.status;
 };
 
-export const getUserByUseranme = async (username: string) => {
+export const getUserByUsername = async (username: string) => {
   const accessToken = Cookies.get('accessToken');
   const res = await fetch(serverURL, {
     method: "POST",

@@ -25,8 +25,9 @@ public class Member {
     @Column(nullable = false, length = 15)
     private String phoneNumber;
 
-    @Column(nullable = false)
-    private boolean isReserved;  //예약을 적어도 한번 했는지
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 30)
+    private isReserved isReserved;  //예약을 적어도 한번 했는지
 
     @Column(nullable = false)
     private boolean isVIP;       //예약을 여러번 할 수 있는지(VIP면 예약을 여러번할 수 있고 아니면 한번밖에 못함)

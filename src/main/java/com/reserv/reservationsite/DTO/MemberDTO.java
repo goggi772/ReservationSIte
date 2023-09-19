@@ -1,6 +1,7 @@
 package com.reserv.reservationsite.DTO;
 
 import com.reserv.reservationsite.core.entity.Member;
+import com.reserv.reservationsite.core.entity.isReserved;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,14 +16,14 @@ public class MemberDTO {
 
     private String phoneNumber;
 
-    private boolean isReserved;
+    private String reserved;
 
     private boolean isVIP;
 
     public MemberDTO(Member member) {
         this.username = member.getUsername();
         this.phoneNumber = member.getPhoneNumber();
-        this.isReserved = member.isReserved();
+        this.reserved = member.getIsReserved().getMessage();
         this.isVIP = member.isVIP();
     }
 }

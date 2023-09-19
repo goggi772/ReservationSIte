@@ -45,8 +45,8 @@ public class MemberController {
     }
 
     @GetMapping("/get/user")
-    public MemberDTO get_username(@AuthenticationPrincipal UserDetails userDetails) {
-        return memberService.findByMember(userDetails.getUsername());
+    public String get_username(@AuthenticationPrincipal UserDetails userDetails) {
+        return userDetails.getUsername();
     }
 
 

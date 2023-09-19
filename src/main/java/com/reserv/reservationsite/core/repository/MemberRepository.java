@@ -1,6 +1,7 @@
 package com.reserv.reservationsite.core.repository;
 
 import com.reserv.reservationsite.core.entity.Member;
+import com.reserv.reservationsite.core.entity.isReserved;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,11 +21,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Modifying
     @Transactional
     @Query("UPDATE Member m SET m.isReserved = :reserved WHERE m.username IN (SELECT b.owner FROM Bike b)")
-    int updateAllByIsReserved(@Param("reserved") boolean reserved);
+    int updateAllByIsReserved(@Param("reserved") isReserved reserved);
 
     @Modifying
     @Transactional
-    @Query("UPDATE Member m SET m.isReserved = false WHERE m.isReserved = true")
+    @Query("UPDATE Member m SET m.isReserved = 'NOT_RESERVED' WHERE m.isReserved != 'NOT_RESERVED'")
     int resetIsReserved();
 
     @Override
