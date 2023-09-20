@@ -16,6 +16,7 @@ const SeatsPage = () => {
 
   const handleClick = async (index: number) => {
     const newBikes = [...bikes];
+    console.log(index);
 
     if (
       newBikes[index].status !== "available" &&
@@ -82,7 +83,7 @@ const SeatsPage = () => {
 
       //yours 찾기
       newBikes.forEach((bike) => {
-        if (bike.owner === username) bike.status = "yours";
+        if (bike.owner === username2) bike.status = "yours";
       });
 
       setBikes(newBikes);
@@ -133,18 +134,17 @@ const SeatsPage = () => {
         </button>
       </div>
 
-        {bike_for_index.slice(0, 7).map((_, index) => {
-          const i = bike_for_index[index];
-          const j = bike_for_index[index + 1];
+        {bike_for_index.slice(0, 7).map((_, index1) => {
+          const i = bike_for_index[index1];
+          const j = bike_for_index[index1 + 1];
           return (
-            <div className="flex justify-center items-center mb-3">
+            <div className="flex justify-center items-center mb-3" key={index1}>
               {bikes.slice(i, j).map((bike, index) => (
-                    <div className="mr-12 ml-12">
+                    <div className="mr-12 ml-12" key={bike.id}>
                       <BikeForUser
-                          key={bike.id}
                           id={bike.id}
                           status={bike.status}
-                          onClick={() => handleClick(index)}
+                          onClick={() => handleClick(i + index)}
                       />
                     </div>
                 ))}

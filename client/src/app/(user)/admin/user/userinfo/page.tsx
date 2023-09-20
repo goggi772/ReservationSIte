@@ -61,8 +61,6 @@ const UserInfo = () => {
 
     const handleFindUsername = () => {
 
-        // setIUsers((user) => user.filter((user) => user.username === inputValue
-        // || user.phoneNumber === inputValue));
         let FilterIUser = IUser;
         if (inputValue != '') {
            FilterIUser = IUser.filter((user) => user.username === inputValue
@@ -152,6 +150,10 @@ const UserInfo = () => {
                     </th>
                     <th scope="col"
                         className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                        예약 시간
+                    </th>
+                    <th scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                         PW 초기화
                     </th>
                     <th scope="col"
@@ -178,6 +180,9 @@ const UserInfo = () => {
                         </td>
                         <td className="px-5 whitespace-nowrap" width="100px">
                             <div className="text-sm text-gray-900">{user.reserved}</div>
+                        </td>
+                        <td className="px-5 whitespace-nowrap" width="100px">
+                            <div className="text-sm text-gray-900">{user.reservedTime}</div>
                         </td>
                         <td className="px-5 whitespace-nowrap" width="50px">
                             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

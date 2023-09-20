@@ -16,12 +16,13 @@ const SeatsPage = () => {
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [bike, setBike] = useState<IBike | null>(null);
-  const newBikesInfo = [...bikes];
+  // const newBikesInfo = [...bikes];
 
   const bike_for_index = [0, 2, 5, 9, 14, 20, 26, 33];
 
   const handleClick = async (index: number) => {
 
+    console.log(bike_for_index.slice(0, 7));
     setBike(cloneDeep(bikes[index]));
     setModalOpen(true);
   };
@@ -51,7 +52,7 @@ const SeatsPage = () => {
     const res = await putDeleteBook(bike.id);
     console.log(bike.id);
     if (res.status === 200) {
-      // const newBikesInfo = [...bikes];
+      const newBikesInfo = [...bikes];
 
       if (bike.status === "disabled") {
         newBikesInfo[bike.id - 1].status = "available";
@@ -86,6 +87,23 @@ const SeatsPage = () => {
     fetchBikes();
   }, []);
 
+  const spinning_time = () => {
+    const date = new Date;
+    const hour = date.getHours();
+    const min = date.getMinutes();
+
+    if ((hour >= 0 && hour < 9) || (hour == 9 && min <= 5)){
+      return "9시 타임 예약 현황";
+    }
+    else if ((hour == 9 && min > 5) || (hour == 10 && min <= 30)) {
+      return "10시 타임 예약 현황";
+    }
+    else if ((hour == 10 && min > 30) || (hour > 10 && hour < 19) || (hour == 19 && min <= 25)) {
+      return "7시 20분 타임 예약 현황";
+    }
+    else return "8시 20분 타임 예약 현황";
+  }
+
   return (
     <div className="p-8">
       <BikeInfoModal
@@ -98,18 +116,21 @@ const SeatsPage = () => {
       <div className="mb-5"></div>
       <h1 className="text-3xl font-semibold mb-4">Spinning Reservation</h1>
 
-      {bike_for_index.slice(0, 7).map((_, index) => {
-        const i = bike_for_index[index];
-        const j = bike_for_index[index + 1];
+      <h2 className="text-xl font-semibold mb-4 text-center">{spinning_time()}</h2>
+
+      {bike_for_index.slice(0, 7).map((_, index1) => {
+        const i = bike_for_index[index1];
+        const j = bike_for_index[index1 + 1];
         return (
-            <div className="flex justify-center items-center mb-3">
+            <div className="flex justify-center items-center mb-3" key={index1}>
               {bikes.slice(i, j).map((bike, index) => (
-                  <div className="mr-12 ml-12">
-                    <BikeForUser
+                  <div className="mr-12 ml-12" key={bike.id}>
+                    <BikeForAdmin
                         key={bike.id}
                         id={bike.id}
+                        owner={bike.owner}
                         status={bike.status}
-                        onClick={() => handleClick(index)}
+                        onClick={() => handleClick(i + index)}
                     />
                   </div>
               ))}
@@ -117,6 +138,7 @@ const SeatsPage = () => {
             </div>
         );
       })}
+
       {/*<div className="grid grid-cols-5 gap-4">*/}
       {/*  {bikes.map((bike, index) => (*/}
       {/*    <BikeForAdmin*/}

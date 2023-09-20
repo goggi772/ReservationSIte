@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -41,12 +42,16 @@ public class BikeService {
             } else {
                 bike.seat_reserv(member.getUsername());
                 bikeRepository.save(bike);
+                member.set_reserved_time(LocalDateTime.now());
+                memberRepository.save(member);
                 return ErrorResponse.toResponseEntity(ErrorCode.RESERVATION_SUCCESSFUL);
             }
         } else if (bike.getStatus().equals(BikeStatus.completed)){
             if (bike.getOwner().equals(member.getUsername())) {
                 bike.change_bikeStatus(BikeStatus.available);
                 bikeRepository.save(bike);
+                member.set_reserved_time(null);
+                memberRepository.save(member);
                 return ErrorResponse.toResponseEntity(ErrorCode.CANCEL_SUCCESSFUL);
             }
             else throw new ReservationNotAvailableException(ErrorCode.ALREADY_RESERVED);  // 이미 예약된 자리
@@ -62,9 +67,13 @@ public class BikeService {
     public ResponseEntity<ErrorResponse> admin_reservation_cancel(BikeDTO dto) {
         Bike bike = bikeRepository.findById(dto.getBikeId()).orElseThrow(() ->
                 new ReservationNotAvailableException(ErrorCode.NOT_EXIST_BIKE));
+        Member member = memberRepository.findByUsername(dto.getUsername()).orElseThrow(() ->
+                new UsernameNotFoundException("존재하지 않는 유저입니다."));
         if (bike.getStatus().equals(BikeStatus.completed) && bike.getOwner() != null) {
             bike.change_bikeStatus(BikeStatus.available);
             bikeRepository.save(bike);
+            member.set_reserved_time(null);
+            memberRepository.save(member);
             return ErrorResponse.toResponseEntity(ErrorCode.CANCEL_SUCCESSFUL);
         } else throw new ReservationNotAvailableException(ErrorCode.ALREADY_CANCEL);
     }

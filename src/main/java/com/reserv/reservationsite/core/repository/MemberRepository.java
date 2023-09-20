@@ -25,7 +25,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE Member m SET m.isReserved = 'NOT_RESERVED' WHERE m.isReserved != 'NOT_RESERVED'")
+    @Query("UPDATE Member m SET m.isReserved = 'NOT_RESERVED', m.reservedTime = null WHERE m.isReserved != 'NOT_RESERVED' OR m.reservedTime != null")
     int resetIsReserved();
 
     @Override

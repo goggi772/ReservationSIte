@@ -13,6 +13,7 @@ export interface IUser {
   username: string;
   phoneNumber: string;
   reserved: string;
+  reservedTime: string,
   vip: boolean;
 }
 
