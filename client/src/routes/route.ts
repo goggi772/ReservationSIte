@@ -1,10 +1,29 @@
 import dotenv from "dotenv";
 import Cookies from "js-cookie";
+import fetchInterceptor from "fetch-intercept";
 
 dotenv.config();
 
 const serverURL = process.env.NEXT_PUBLIC_SERVER_URL as string;
 
+//
+// fetchInterceptor.register({
+//   request: function (url, config) {
+//     const accessToken = Cookies.get('accessToken');
+//     // 특정 요청에만 accessToken 추가
+//     console.log("토큰 있나? ",accessToken);
+//     if (accessToken != undefined) {
+//       config.headers['Authorization'] = `Bearer ${accessToken}`;
+//     }
+//     return [url, config];
+//   },
+// });
+
+// fetchIntercept.register({
+//   response: async function (response) {
+//     if (response.status === 401) {
+//   },
+// });
 
 export const fetchLogin = async (username: string, password: string) => {
   const res = await fetch(serverURL + "/login", {
@@ -35,7 +54,6 @@ export const getLogout = async () => {
 
 export const getBikes = async () => {
   const accessToken = Cookies.get('accessToken');
-
   const res = await fetch(serverURL + "/bike", {
     method: "GET",
     credentials: "include",
@@ -209,7 +227,6 @@ export const getCheckAuth = async () => {
     },
   });
 
-  console.log(accessToken);
 
   if (res.status === 200) {
     return true;
@@ -249,3 +266,5 @@ export const getIUser = async () => {
 
   return res;
 };
+
+

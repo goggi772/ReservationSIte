@@ -21,4 +21,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleNotEqualsPasswordException(NotEqualsPasswordException exception) {
         return ErrorResponse.toResponseEntity(exception.getErrorCode());
     }
+
+    @ExceptionHandler(JwtRelationException.class)
+    public ResponseEntity<ErrorResponse> handleJwtRelationException(JwtRelationException exception) {
+        return ErrorResponse.toResponseEntity(exception.getErrorCode());
+    }
 }

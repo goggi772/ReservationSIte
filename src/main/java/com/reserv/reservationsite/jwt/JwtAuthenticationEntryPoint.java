@@ -69,25 +69,26 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
                          AuthenticationException e) throws IOException, ServletException {
-        String error;
-        if (e instanceof BadCredentialsException) {
-            error = "Incorrect_ID_or_Password";
-        } else if (e instanceof InternalAuthenticationServiceException) {
-            error = "Internal_Authentication_Error";
-        } else if (e instanceof AuthenticationCredentialsNotFoundException) {
-            error = "Refuse_Authentication_Request";
-        } else if (e instanceof InsufficientAuthenticationException) {
-            error = "Token_Error";
-        } else {
-            error = "Unknown_Error";
-        }
-        String noAuthMessage = "{\n" +
-                "    \"status\": \"FAILURE\",\n" +
-                "    \"message\": \"" + error + "\"\n" +
-                "}";
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setContentType(APPLICATION_JSON.toString());
+//        String error;
+//        if (e instanceof BadCredentialsException) {
+//            error = "Incorrect_ID_or_Password";
+//        } else if (e instanceof InternalAuthenticationServiceException) {
+//            error = "Internal_Authentication_Error";
+//        } else if (e instanceof AuthenticationCredentialsNotFoundException) {
+//            error = "Refuse_Authentication_Request";
+//        } else if (e instanceof InsufficientAuthenticationException) {
+//            error = "Token_Error";
+//        } else {
+//            error = "Unknown_Error";
+//        }
+//        String noAuthMessage = "{\n" +
+//                "    \"status\": \"FAILURE\",\n" +
+//                "    \"message\": \"" + error + "\"\n" +
+//                "}";
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+//        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//        response.setContentType(APPLICATION_JSON.toString());
 //        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().println(noAuthMessage);
+//        response.getWriter().println(noAuthMessage);
     }
 }

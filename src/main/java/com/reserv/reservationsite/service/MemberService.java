@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -24,6 +26,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +45,8 @@ public class MemberService {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    private final RedisTemplate<String, Object> redisTemplate;
+
     @Transactional
     public TokenInfo login(String username, String password) {
         // 1. Login ID/PW 를 기반으로 Authentication 객체 생성
@@ -55,7 +60,11 @@ public class MemberService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
-        return jwtTokenProvider.generateToken(authentication);
+        TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication, true);
+        redisTemplate.opsForValue().set(username, tokenInfo.getRefreshToken(), Duration.ofHours(1)); //redis에 1시간제한 저장
+
+        return tokenInfo;
+
     }
 
     @Transactional
@@ -104,8 +113,8 @@ public class MemberService {
         memberRepository.deleteByUsername(username);
     }
 
-    public MemberDTO findByMember(String username) {
-        return memberRepository.findByUsername(username).map(MemberDTO::new).orElseThrow(() ->
+    public Member findByMember(String username) {
+        return memberRepository.findByUsername(username).orElseThrow(() ->
                 new NotFoundUserException(ErrorCode.NOT_EXIST_USER));
     }
 
@@ -113,6 +122,7 @@ public class MemberService {
         return memberRepository.findAll(Sort.by(Sort.Direction.ASC, "username")).stream().map(MemberDTO::new)
                 .collect(Collectors.toList());
     }
+
 
 
 

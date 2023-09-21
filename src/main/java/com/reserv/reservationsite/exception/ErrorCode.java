@@ -31,6 +31,7 @@ public enum ErrorCode {
     // 401 UNAUTHORIZED
     INVALID_TOKEN(UNAUTHORIZED, "유효하지 않은 토큰입니다."),
     EXPIRED_TOKEN(UNAUTHORIZED, "만료된 토큰입니다."),
+    TOKEN_ERROR(UNAUTHORIZED, "토큰이 만료되거나 유효하지 않습니다."),
     INCORRECT_ID_PASSWORD(UNAUTHORIZED, "아이디 혹은 비밀번호가 맞지 않습니다."),
 
 
