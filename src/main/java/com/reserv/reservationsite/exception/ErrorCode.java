@@ -27,12 +27,12 @@ public enum ErrorCode {
     ALREADY_EXIST_USERNAME(BAD_REQUEST, "존재하는 이름입니다."),
     RESERVATION_NOT_POSSIBLE(BAD_REQUEST, "예약 가능한 시간이 아닙니다."),
     ALREADY_CANCEL(BAD_REQUEST, "이미 예약이 취소되었습니다."),
+    INCORRECT_ID_PASSWORD(BAD_REQUEST, "아이디 혹은 비밀번호가 맞지 않습니다."),
+    INVALID_TOKEN(BAD_REQUEST, "유효하지 않은 토큰입니다."),
 
     // 401 UNAUTHORIZED
-    INVALID_TOKEN(UNAUTHORIZED, "유효하지 않은 토큰입니다."),
     EXPIRED_TOKEN(UNAUTHORIZED, "만료된 토큰입니다."),
     TOKEN_ERROR(UNAUTHORIZED, "토큰이 만료되거나 유효하지 않습니다."),
-    INCORRECT_ID_PASSWORD(UNAUTHORIZED, "아이디 혹은 비밀번호가 맞지 않습니다."),
 
 
     //404 NOT_FOUND

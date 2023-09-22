@@ -9,6 +9,10 @@ import { IBike } from "@/interface/interface";
 import BikeInfoModal from "@/components/BikeInfoModal";
 import WithAdminOnly from "@/components/hoc/WithAdminOnly";
 import BikeForUser from "@/components/BikeForUser";
+import LogoutBtn from "@/components/button/LogoutBtn";
+import SignupBtn from "@/components/button/SignupBtn";
+import AdminHomeBtn from "@/components/button/AdminHomeBtn";
+import UserInfoBtn from "@/components/button/UserInfoBtn";
 
 const SeatsPage = () => {
 
@@ -114,7 +118,16 @@ const SeatsPage = () => {
         disableBook={handleDisableBook}
       />
       <div className="mb-5"></div>
+      <div className="flex justify-end">
       <h1 className="text-3xl font-semibold mb-4">Spinning Reservation</h1>
+        <div className="m-auto"></div>
+        <div className="space-x-4">
+        <UserInfoBtn/>
+        <AdminHomeBtn/>
+        <SignupBtn/>
+        <LogoutBtn/>
+        </div>
+      </div>
 
       <h2 className="text-xl font-semibold mb-4 text-center">{spinning_time()}</h2>
 

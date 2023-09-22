@@ -5,33 +5,24 @@ import com.reserv.reservationsite.DTO.RegisterDTO;
 import com.reserv.reservationsite.DTO.TokenInfo;
 import com.reserv.reservationsite.core.entity.Member;
 import com.reserv.reservationsite.core.repository.MemberRepository;
-import com.reserv.reservationsite.exception.ErrorCode;
-import com.reserv.reservationsite.exception.ErrorResponse;
-import com.reserv.reservationsite.exception.NotEqualsPasswordException;
-import com.reserv.reservationsite.exception.NotFoundUserException;
+import com.reserv.reservationsite.exception.*;
 import com.reserv.reservationsite.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -65,6 +56,18 @@ public class MemberService {
 
         return tokenInfo;
 
+    }
+
+    public TokenInfo regenerationAccessToken(TokenInfo tokenInfo) {
+        String access = tokenInfo.getAccessToken();
+        String refresh = tokenInfo.getRefreshToken();
+
+        if (refresh != null && jwtTokenProvider.validateToken(refresh)) {
+            Authentication authentication = jwtTokenProvider.getAuthentication(access);
+            if (Objects.equals(redisTemplate.opsForValue().get(authentication.getName()), refresh)) {
+                return jwtTokenProvider.generateToken(authentication, false);
+            } else throw new JwtTokenException(ErrorCode.TOKEN_ERROR.getDetail(), ErrorCode.TOKEN_ERROR);
+        } else throw new JwtTokenException(ErrorCode.TOKEN_ERROR.getDetail(), ErrorCode.TOKEN_ERROR);
     }
 
     @Transactional

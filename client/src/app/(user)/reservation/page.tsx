@@ -5,6 +5,7 @@ import {IBike} from "@/interface/interface";
 import BikeForUser from "@/components/BikeForUser";
 import WithAuthOnly from "@/components/hoc/WithAuthOnly";
 import {useRouter} from "next/navigation";
+import LogoutBtn from "@/components/button/LogoutBtn";
 
 const SeatsPage = () => {
   const [bikes, setBikes] = useState<IBike[]>([]);
@@ -61,11 +62,7 @@ const SeatsPage = () => {
       const res = await getBikes();
       const res2 = await getUsername();
 
-      if (res.status == 401) {
-        alert("로그아웃 되었습니다.");
-        return;
-      }
-      else if (res.status !== 200) {
+      if (res.status !== 200) {
         alert("예약 가능 시간이 아닙니다.");
         return;
       }
@@ -114,7 +111,11 @@ const SeatsPage = () => {
 
   return (
     <div className="p-8">
+      <div className="flex justify-end">
       <h1 className="text-3xl font-semibold mb-4">Spinning Reservation</h1>
+        <div className="m-auto"></div>
+        <LogoutBtn/>
+      </div>
       <h2 className="text-xl font-semibold mb-4 text-center">{spinning_time()}</h2>
       <div className="mb-4 justify-end flex items-center">
           <div className="w-10 h-10 bg-blue-500 text-white rounded-lg"></div>

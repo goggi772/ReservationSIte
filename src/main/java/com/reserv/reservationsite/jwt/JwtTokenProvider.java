@@ -1,6 +1,8 @@
 package com.reserv.reservationsite.jwt;
 
 import com.reserv.reservationsite.DTO.TokenInfo;
+import com.reserv.reservationsite.exception.ErrorCode;
+import com.reserv.reservationsite.exception.JwtTokenException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -31,7 +33,7 @@ public class JwtTokenProvider {
     }
 
     // 유저 정보를 가지고 AccessToken, RefreshToken 을 생성
-    public TokenInfo generateToken(Authentication authentication) {
+    public TokenInfo generateToken(Authentication authentication, boolean generateBothToken) {
         // 권한 가져오기
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -40,25 +42,32 @@ public class JwtTokenProvider {
         long now = System.currentTimeMillis();
 
         // Access Token 생성
-        Date accessTokenExpiresIn = new Date(now + 60000 * 10);    //10분
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
-                .setExpiration(accessTokenExpiresIn)
+                .setExpiration(new Date(now + 60000 * 15))  //10분
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+        if (generateBothToken) {
 
-        // Refresh Token 생성
-        String refreshToken = Jwts.builder()
-                .setExpiration(new Date(now + 60000 * 60 * 24))  //1일
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+            // Refresh Token 생성
+            String refreshToken = Jwts.builder()
+                    .setExpiration(new Date(now + 60000 * 60))  // 1시간
+                    .signWith(key, SignatureAlgorithm.HS256)
+                    .compact();
 
-        return TokenInfo.builder()
-                .grantType("Bearer")
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
+            return TokenInfo.builder()
+                    .grantType("Bearer")
+                    .accessToken(accessToken)
+                    .refreshToken(refreshToken)
+                    .build();
+        } else {
+            return TokenInfo.builder()
+                    .grantType("Bearer")
+                    .accessToken(accessToken)
+                    .build();
+        }
+
     }
 
     // JWT 토큰을 복호화하여 토큰에 들어있는 정보를 꺼내는 메서드
@@ -88,14 +97,17 @@ public class JwtTokenProvider {
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT Token");
+            throw new JwtTokenException(ErrorCode.INVALID_TOKEN.getDetail(), ErrorCode.INVALID_TOKEN);
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT Token");
+            throw new JwtTokenException(ErrorCode.EXPIRED_TOKEN.getDetail(), ErrorCode.EXPIRED_TOKEN);
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT Token");
+            throw new JwtTokenException(ErrorCode.TOKEN_ERROR.getDetail(), ErrorCode.TOKEN_ERROR);
         } catch (IllegalArgumentException e) {
             log.info("JWT claims string is empty.");
+            throw new JwtTokenException(ErrorCode.TOKEN_ERROR.getDetail(), ErrorCode.TOKEN_ERROR);
         }
-        return false;
     }
 
     private Claims parseClaims(String accessToken) {

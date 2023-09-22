@@ -7,7 +7,10 @@ import {deleteUser, getIUser, putUserPW} from "@/routes/route";
 import Pagination from "@/components/UserInfoPaging";
 import React from "react";
 import {element} from "prop-types";
-import AdminLayout from "@/app/(user)/admin/layout";
+import UserInfoBtn from "@/components/button/UserInfoBtn";
+import AdminHomeBtn from "@/components/button/AdminHomeBtn";
+import SignupBtn from "@/components/button/SignupBtn";
+import LogoutBtn from "@/components/button/LogoutBtn";
 
 
 const UserInfo = () => {
@@ -105,6 +108,14 @@ const UserInfo = () => {
 
     return (
         <div className="flex flex-col justify-center items-center h-screen px-28">
+            <div className="ml-auto">
+                <div className="space-x-4">
+                    <UserInfoBtn/>
+                    <AdminHomeBtn/>
+                    <SignupBtn/>
+                    <LogoutBtn/>
+                </div>
+            </div>
             <div className="mb-5"></div>
             <h1 className="text-3xl font-semibold mb-4">회원 관리</h1>
             <div className="mb-4 flex self-end">
@@ -205,7 +216,6 @@ const UserInfo = () => {
                 totalPages={totalPages}
                 onPageChange={handlePageChange}/>
         </div>
-
 
     );
 };

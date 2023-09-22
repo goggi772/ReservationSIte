@@ -6,8 +6,11 @@ import {useState} from "react";
 import {Simulate} from "react-dom/test-utils";
 import error = Simulate.error;
 import {boolean} from "zod";
+import {useRouter} from "next/navigation";
 
 const SignupPage = () => {
+
+  const router = useRouter();
 
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
@@ -61,6 +64,10 @@ const SignupPage = () => {
       ...formData,
       [name]: inputValue,
     });
+  };
+
+  const onClickBtn = async () => {
+    router.push("/admin/reservation");
   };
 
   return (
@@ -139,6 +146,13 @@ const SignupPage = () => {
             Sign Up
           </button>
         </form>
+          <div className="mb-4"></div>
+          <button
+              onClick={onClickBtn}
+              className="w-full bg-gray-500 rounded-md p-2 text-white hover:bg-gray-600"
+          >
+            예약화면으로
+          </button>
       </div>
     </div>
   );

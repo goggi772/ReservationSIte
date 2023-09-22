@@ -1,36 +1,98 @@
 import dotenv from "dotenv";
 import Cookies from "js-cookie";
-import fetchInterceptor from "fetch-intercept";
+import fetchIntercept from "fetch-intercept";
 
 dotenv.config();
 
 const serverURL = process.env.NEXT_PUBLIC_SERVER_URL as string;
 
+
+
+// const unregister = fetchIntercept.register({
+//   response: async function (response) {
+//     if (response.status == 401) {
+//       const accessToken = Cookies.get('accessToken');
+//       const refreshToken = Cookies.get('refreshToken');
+//       const res = await fetch(serverURL + "/api/refreshToken", {
+//         method: 'POST',
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({ accessToken, refreshToken }),
+//       });
+//       if (res.status === 200) {
+//         const data = await res.json();
+//         const {accessToken} = data;
 //
-// fetchInterceptor.register({
-//   request: function (url, config) {
-//     const accessToken = Cookies.get('accessToken');
-//     // 특정 요청에만 accessToken 추가
-//     console.log("토큰 있나? ",accessToken);
-//     if (accessToken != undefined) {
-//       config.headers['Authorization'] = `Bearer ${accessToken}`;
+//         Cookies.set('accessToken', accessToken);
+//
+//         const originalRequest = response.request;
+//         originalRequest.headers.set('Authorization', `Bearer ${accessToken}`);
+//         return fetch(originalRequest.url, originalRequest);
+//       } else {
+//         const status = await getLogout();
+//
+//         if (status === 204) {
+//           Cookies.remove("accessToken");
+//           Cookies.remove("refreshToken");
+//           alert("다시 로그인해주세요.")
+//           window.location.href = "/login";
+//         }
+//       }
 //     }
-//     return [url, config];
+//     return response;
 //   },
 // });
 
-// fetchIntercept.register({
-//   response: async function (response) {
-//     if (response.status === 401) {
-//   },
-// });
+async function customFetch(url: string, options: RequestInit) {
+  try {
+    const response = await fetch(url, options);
+
+    if (response.status === 401) {
+      const accessToken = Cookies.get('accessToken');
+      const refreshToken = Cookies.get('refreshToken');
+      const res = await fetch(serverURL + "/api/refreshToken", {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ accessToken, refreshToken }),
+      });
+      if (res.status === 200) {
+        const data = await res.json();
+        const {accessToken} = data;
+
+        Cookies.set('accessToken', accessToken);
+
+        options.headers = {
+          ...options.headers,
+          Authorization: `Bearer ${accessToken}`
+        };
+        // options.headers.set('Authorization', `Bearer ${accessToken}`);
+        return fetch(url, options);
+      } else {
+        const status = await getLogout();
+        if (status === 204) {
+          Cookies.remove("accessToken");
+          Cookies.remove("refreshToken");
+          alert("다시 로그인해주세요.")
+          window.location.href = "/login";
+        }
+      }
+    }
+    return response;
+  } catch (error) {
+    // 오류 처리
+    console.error("HTTP 요청 중 오류 발생:", error);
+    throw error;
+  }
+}
 
 export const fetchLogin = async (username: string, password: string) => {
   const res = await fetch(serverURL + "/login", {
     method: "POST",
     credentials: "include",
     headers: {
-      Accept: "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ username, password }),
@@ -41,7 +103,7 @@ export const fetchLogin = async (username: string, password: string) => {
 };
 
 export const getLogout = async () => {
-  const res = await fetch(serverURL + "/api/logout", {
+  const res = await customFetch(serverURL + "/api/logout", {
     method: "POST",
     credentials: "include",
     headers: {
@@ -54,7 +116,7 @@ export const getLogout = async () => {
 
 export const getBikes = async () => {
   const accessToken = Cookies.get('accessToken');
-  const res = await fetch(serverURL + "/bike", {
+  const res = await customFetch(serverURL + "/bike", {
     method: "GET",
     credentials: "include",
     headers: {
@@ -67,7 +129,7 @@ export const getBikes = async () => {
 export const getUsername = async () => {
   const accessToken = Cookies.get('accessToken');
 
-  const res = await fetch(serverURL + "/get/user", {
+  const res = await customFetch(serverURL + "/get/user", {
     method: "GET",
     credentials: "include",
     headers: {
@@ -82,7 +144,7 @@ export const getUsername = async () => {
 
 export const putBikeInfo = async (bikeId: number) => {
   const accessToken = Cookies.get('accessToken');
-  const res = await fetch(serverURL + "/bike/reservation", {
+  const res = await customFetch(serverURL + "/bike/reservation", {
     method: "PUT",
     credentials: "include",
     headers: {
@@ -102,7 +164,7 @@ export const postSignup = async (
   isVIP: boolean
 ) => {
   const accessToken = Cookies.get('accessToken');
-  const res = await fetch(serverURL + "/admin/register", {
+  const res = await customFetch(serverURL + "/admin/register", {
     method: "POST",
     credentials: "include",
     headers: {
@@ -117,7 +179,7 @@ export const postSignup = async (
 
 export const getUserByUsername = async (username: string) => {
   const accessToken = Cookies.get('accessToken');
-  const res = await fetch(serverURL, {
+  const res = await customFetch(serverURL, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -131,7 +193,7 @@ export const getUserByUsername = async (username: string) => {
 };
 
 export const putUserName = async (id: string, newName: string) => {
-  const res = await fetch(serverURL, {
+  const res = await customFetch(serverURL, {
     method: "PUT",
     credentials: "include",
     headers: {
@@ -145,7 +207,7 @@ export const putUserName = async (id: string, newName: string) => {
 
 export const putUserPW = async (username: string) => {
   const accessToken = Cookies.get('accessToken');
-  return await fetch(serverURL + "/admin/resetPassword", {
+  return await customFetch(serverURL + "/admin/resetPassword", {
     method: "POST",
     credentials: "include",
     headers: {
@@ -159,7 +221,7 @@ export const putUserPW = async (username: string) => {
 
 export const changePW = async (oldPassword: string, newPassword: string) => {
   const accessToken = Cookies.get('accessToken');
-  return await fetch(serverURL + "/changePw", {
+  return await customFetch(serverURL + "/changePw", {
     method: "POST",
     credentials: "include",
     headers: {
@@ -172,7 +234,7 @@ export const changePW = async (oldPassword: string, newPassword: string) => {
 
 export const deleteUser = async (username: string) => {
   const accessToken = Cookies.get('accessToken');
-  const res = await fetch(serverURL + "/admin/delete", {
+  const res = await customFetch(serverURL + "/admin/delete", {
     method: "DELETE",
     credentials: "include",
     headers: {
@@ -187,7 +249,7 @@ export const deleteUser = async (username: string) => {
 
 export const putCancelBook = async (bikeId: number) => {
   const accessToken = Cookies.get('accessToken');
-  const res = await fetch(serverURL + "/admin/reservation/cancel", {
+  const res = await customFetch(serverURL + "/admin/reservation/cancel", {
     method: "PUT",
     credentials: "include",
     headers: {
@@ -202,7 +264,7 @@ export const putCancelBook = async (bikeId: number) => {
 
 export const putDeleteBook = async (bikeId: number) => {
   const accessToken = Cookies.get('accessToken');
-  const res = await fetch(serverURL + "/admin/reservation/disabled", {
+  const res = await customFetch(serverURL + "/admin/reservation/disabled", {
     method: "PUT",
     credentials: "include",
     headers: {
@@ -218,44 +280,43 @@ export const putDeleteBook = async (bikeId: number) => {
 export const getCheckAuth = async () => {
   const accessToken = Cookies.get('accessToken');
 
-  const res = await fetch(serverURL + "/auth/user", {
-    method: "GET",
-    credentials: "include",
-    headers: {
-      "Authorization": `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
-    },
-  });
+  if (accessToken != null) {
+
+    const res = await customFetch(serverURL + "/auth/user", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Authorization": `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
 
 
-  if (res.status === 200) {
-    return true;
-  } else {
-    return false;
-  }
+    return res.status === 200;
+  } else return false;
 };
 
 export const getCheckAdmin = async () => {
   const accessToken = Cookies.get('accessToken');
-  const res = await fetch(serverURL + "/auth/admin", {
-    method: "GET",
-    credentials: "include",
-    headers: {
-      "Authorization": `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
-    },
-  });
 
-  if (res.status === 200) {
-    return true;
-  } else {
-    return false;
-  }
+  if (accessToken != null) {
+    const res = await customFetch(serverURL + "/auth/admin", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Authorization": `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    return res.status === 200;
+  } else return false;
+
 };
 
 export const getIUser = async () => {
   const accessToken = Cookies.get('accessToken');
-  const res = await fetch(serverURL + `/admin/member/view`, {
+  const res = await customFetch(serverURL + `/admin/member/view`, {
     method: "GET",
     credentials: "include",
     headers: {

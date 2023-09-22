@@ -8,7 +8,6 @@ import com.reserv.reservationsite.core.entity.Member;
 import com.reserv.reservationsite.core.entity.Role;
 import com.reserv.reservationsite.exception.ErrorCode;
 import com.reserv.reservationsite.exception.ErrorResponse;
-import com.reserv.reservationsite.exception.JwtRelationException;
 import com.reserv.reservationsite.exception.NotFoundUserException;
 import com.reserv.reservationsite.jwt.JwtTokenProvider;
 import com.reserv.reservationsite.service.MemberDetails;
@@ -50,27 +49,8 @@ public class MemberController {
     }
 
     @PostMapping("/api/refreshToken")
-    public TokenInfo refreshAccessToken(HttpServletRequest request,
-                                                            @AuthenticationPrincipal UserDetails userDetails) {
-
-        try {
-            String token = null;
-            String bearerToken = request.getHeader("Authorization");
-            if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-                token = bearerToken.substring(7);
-            }
-            if (token != null && jwtTokenProvider.validateToken(token)) {
-                Member member = memberService.findByMember(jwtTokenProvider.getSubjectToken(token));
-
-                Object getRefreshToken = redisTemplate.opsForValue().get(member.getUsername());
-                if (getRefreshToken != null && getRefreshToken.equals(token)) {
-                    return jwtTokenProvider.generateToken(SecurityContextHolder.getContext().getAuthentication(), false);
-                } else throw new JwtRelationException(ErrorCode.INVALID_TOKEN);
-            } else throw new JwtRelationException(ErrorCode.EXPIRED_TOKEN);
-        } catch (Exception e) {
-            log.info("테스트", e);
-            throw new JwtRelationException(ErrorCode.TOKEN_ERROR);
-        }
+    public TokenInfo refreshAccessToken(@RequestBody TokenInfo tokenInfo) {
+        return memberService.regenerationAccessToken(tokenInfo);
     }
 
     @PostMapping("/changePw")

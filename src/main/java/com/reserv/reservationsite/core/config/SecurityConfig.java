@@ -1,8 +1,10 @@
 package com.reserv.reservationsite.core.config;
 
 
+import com.reserv.reservationsite.exception.JwtTokenException;
 import com.reserv.reservationsite.jwt.JwtAuthenticationEntryPoint;
 import com.reserv.reservationsite.jwt.JwtAuthenticationFilter;
+import com.reserv.reservationsite.jwt.JwtExceptionFilter;
 import com.reserv.reservationsite.jwt.JwtTokenProvider;
 import com.reserv.reservationsite.service.MemberDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +39,8 @@ public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    private final JwtExceptionFilter jwtExceptionFilter;
+
     private final MemberDetailsService memberDetailsService;
 
     @Bean
@@ -70,6 +74,7 @@ public class SecurityConfig {
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class)
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout")) // 로그아웃 URL
                 .logoutSuccessHandler((request, response, authentication) -> response.setStatus(HttpStatus.NO_CONTENT.value()));

@@ -22,8 +22,8 @@ public class GlobalExceptionHandler {
         return ErrorResponse.toResponseEntity(exception.getErrorCode());
     }
 
-    @ExceptionHandler(JwtRelationException.class)
-    public ResponseEntity<ErrorResponse> handleJwtRelationException(JwtRelationException exception) {
+    @ExceptionHandler(JwtTokenException.class)
+    public ResponseEntity<ErrorResponse> handleJwtRelationException(JwtTokenException exception) {
         return ErrorResponse.toResponseEntity(exception.getErrorCode());
     }
 }
