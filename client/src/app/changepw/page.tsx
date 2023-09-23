@@ -103,14 +103,14 @@ const ChangePwPage = () => {
             >
               변경
             </button>
-            <div className="mb-4"></div>
-            <button
-                onClick={onClickBtn}
-                className="w-full bg-gray-500 rounded-md p-2 text-white hover:bg-gray-600"
-            >
-              예약화면으로
-            </button>
           </form>
+          <div className="mb-4"></div>
+          <button
+              onClick={onClickBtn}
+              className="w-full bg-gray-500 rounded-md p-2 text-white hover:bg-gray-600"
+          >
+            예약화면으로
+          </button>
         </div>
       </div>
   );

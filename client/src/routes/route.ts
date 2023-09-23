@@ -291,7 +291,7 @@ export const getIUser = async () => {
   return res;
 };
 
-export const getBikeToCache = async () => {
+export const getBikesInfoClone = async () => {
   const accessToken = Cookies.get('accessToken');
   const res = await customFetch(serverURL + `/admin/get/bike/cache`, {
     method: "GET",
@@ -303,6 +303,6 @@ export const getBikeToCache = async () => {
   });
 
   return res;
-};
+}
 
 

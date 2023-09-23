@@ -3,12 +3,13 @@ package com.reserv.reservationsite.core.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Bike {
+public class Bike implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

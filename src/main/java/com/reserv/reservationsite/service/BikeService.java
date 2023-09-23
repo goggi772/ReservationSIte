@@ -22,7 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -69,6 +71,7 @@ public class BikeService {
     @Cacheable(value = "bikeCache", key = "'Bikes_Clone'")
     public List<Bike> getAllBikesToCache() {
         return bikeRepository.findAllByOrderByIdAsc();
+
     }
     @CacheEvict(value = "bikeCache", key = "'Bikes_Clone'")
     public void evictAllBikesCache() {

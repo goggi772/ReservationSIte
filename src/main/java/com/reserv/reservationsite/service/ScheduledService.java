@@ -32,7 +32,7 @@ public class ScheduledService {
 
     private final RedisTemplate<String, Object> redisTemplate;
 
-    @Scheduled(cron = "0 13 18,19,20,21 ? * MON-SAT", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 4 2,19,20,21 ? * MON-SUN", zone = "Asia/Seoul")
     @Scheduled(cron = "0 0 8,9,10 ? * MON-FRI", zone = "Asia/Seoul")
     public void reset_bike() {  //월~금 8시5분, 9시5분, 10시 5분, 6시25분, 7시25분, 8시25분, 9시25분에 bike entity 초기화
         Calendar calendar = Calendar.getInstance();
@@ -56,9 +56,6 @@ public class ScheduledService {
         bikeService.evictAllBikesCache();
         bikeService.getAllBikesToCache();
 
-//        redisTemplate.opsForList().leftPushAll("Bike_Clone", bikes, Duration.ofHours(1));
-//        ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
-//        valueOperations.set("Bike_Clone", bikes, Duration.ofHours(1));  //전 타임 bike예약 정보 저장
         log.info("Bike 상태 저장 완료");
 
         int num2 = bikeRepository.resetBike();  //bike 상태와 owner를 reset해주는 scheduler
