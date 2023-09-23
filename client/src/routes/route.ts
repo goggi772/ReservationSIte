@@ -7,43 +7,6 @@ dotenv.config();
 const serverURL = process.env.NEXT_PUBLIC_SERVER_URL as string;
 
 
-
-// const unregister = fetchIntercept.register({
-//   response: async function (response) {
-//     if (response.status == 401) {
-//       const accessToken = Cookies.get('accessToken');
-//       const refreshToken = Cookies.get('refreshToken');
-//       const res = await fetch(serverURL + "/api/refreshToken", {
-//         method: 'POST',
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({ accessToken, refreshToken }),
-//       });
-//       if (res.status === 200) {
-//         const data = await res.json();
-//         const {accessToken} = data;
-//
-//         Cookies.set('accessToken', accessToken);
-//
-//         const originalRequest = response.request;
-//         originalRequest.headers.set('Authorization', `Bearer ${accessToken}`);
-//         return fetch(originalRequest.url, originalRequest);
-//       } else {
-//         const status = await getLogout();
-//
-//         if (status === 204) {
-//           Cookies.remove("accessToken");
-//           Cookies.remove("refreshToken");
-//           alert("다시 로그인해주세요.")
-//           window.location.href = "/login";
-//         }
-//       }
-//     }
-//     return response;
-//   },
-// });
-
 async function customFetch(url: string, options: RequestInit) {
   try {
     const response = await fetch(url, options);
@@ -317,6 +280,20 @@ export const getCheckAdmin = async () => {
 export const getIUser = async () => {
   const accessToken = Cookies.get('accessToken');
   const res = await customFetch(serverURL + `/admin/member/view`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Authorization": `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  return res;
+};
+
+export const getBikeToCache = async () => {
+  const accessToken = Cookies.get('accessToken');
+  const res = await customFetch(serverURL + `/admin/get/bike/cache`, {
     method: "GET",
     credentials: "include",
     headers: {

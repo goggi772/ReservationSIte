@@ -12,6 +12,9 @@ import com.reserv.reservationsite.exception.ErrorResponse;
 import com.reserv.reservationsite.exception.ReservationNotAvailableException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -61,6 +64,14 @@ public class BikeService {
 
     public List<Bike> findAllBikes() {
         return bikeRepository.findAllByOrderByIdAsc();
+    }
+
+    @Cacheable(value = "bikeCache", key = "'Bikes_Clone'")
+    public List<Bike> getAllBikesToCache() {
+        return bikeRepository.findAllByOrderByIdAsc();
+    }
+    @CacheEvict(value = "bikeCache", key = "'Bikes_Clone'")
+    public void evictAllBikesCache() {
     }
 
     @Transactional

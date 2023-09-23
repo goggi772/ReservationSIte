@@ -19,12 +19,12 @@ public class TimeInterceptor implements HandlerInterceptor {
         int day = calendar.get(Calendar.DAY_OF_WEEK);  //요일
         int hour = calendar.get(Calendar.HOUR_OF_DAY); // 시간
         int min = calendar.get(Calendar.MINUTE); // 분
+        int sec = calendar.get(Calendar.SECOND); // 초
 
            //월 화 수 목 금
-        if ((day > 1 && day < 7) && (((hour == 8 && min >= 10) || (hour == 9 && min < 5)) ||  //8시10분 ~ 9시5분
-                ((hour == 9 && min >= 10) || hour == 10 && min < 5) ||  //9시10분 ~ 10시5분
-                ((hour == 18 && min >= 30) || (hour == 19 && min < 25)) ||  //6시30분 ~ 7시25분
-                ((hour == 19 && min >= 30) || (hour == 20 && min < 25)))) {  //7시30분 ~ 8시25분에만 예약 가능함
+        if ((day > 1 && day < 7) && (hour == 8 || (hour == 9 && (min != 0 || sec != 0)) || //8시 ~ 9시 59분
+                ((hour == 18 && min >= 20 && (min != 20 || sec != 0)) || (hour == 19 && min < 20)) ||  //6시20분 ~ 7시20분
+                ((hour == 19 && (min != 20 || sec != 0)) || (hour == 20 && min < 20)))) {  //7시20분 ~ 8시20분에만 예약 가능함
             return true;
         } else {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);

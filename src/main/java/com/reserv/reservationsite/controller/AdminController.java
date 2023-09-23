@@ -3,6 +3,7 @@ package com.reserv.reservationsite.controller;
 import com.reserv.reservationsite.DTO.BikeDTO;
 import com.reserv.reservationsite.DTO.MemberDTO;
 import com.reserv.reservationsite.DTO.RegisterDTO;
+import com.reserv.reservationsite.core.entity.Bike;
 import com.reserv.reservationsite.core.entity.Role;
 import com.reserv.reservationsite.exception.ErrorCode;
 import com.reserv.reservationsite.exception.ErrorResponse;
@@ -81,5 +82,10 @@ public class AdminController {
     @GetMapping("/member/view")
     public List<MemberDTO> get_page_member() {
         return memberService.get_member_info();
+    }
+
+    @GetMapping("/get/bike/cache")
+    public List<Bike> getBikeStatusToCache() {
+        return bikeService.getAllBikesToCache();
     }
 }
