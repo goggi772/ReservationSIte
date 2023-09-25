@@ -17,7 +17,6 @@ const SeatsPage = () => {
 
   const handleClick = async (index: number) => {
     const newBikes = [...bikes];
-    console.log(index);
 
     if (
       newBikes[index].status !== "available" &&

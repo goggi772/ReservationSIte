@@ -4,12 +4,13 @@ import com.reserv.reservationsite.DTO.MemberDTO;
 import com.reserv.reservationsite.DTO.RegisterDTO;
 import com.reserv.reservationsite.DTO.TokenInfo;
 import com.reserv.reservationsite.core.entity.Member;
+import com.reserv.reservationsite.core.entity.RefreshToken;
 import com.reserv.reservationsite.core.repository.MemberRepository;
+import com.reserv.reservationsite.core.redisRepository.RefreshTokenRepository;
 import com.reserv.reservationsite.exception.*;
 import com.reserv.reservationsite.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,9 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -34,6 +33,8 @@ public class MemberService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private final MemberRepository memberRepository;
+
+    private final RefreshTokenRepository refreshTokenRepository;
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
@@ -55,7 +56,10 @@ public class MemberService {
 
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
         TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication, true);
-        redisTemplate.opsForValue().set("Member:"+username, tokenInfo.getRefreshToken(), Duration.ofHours(1)); //redis에 1시간제한 저장
+        refreshTokenRepository.save(RefreshToken.builder()
+                .username(username).
+                refreshToken(tokenInfo.getRefreshToken())
+                .timeToLive(Duration.ofHours(1).toMillis()).build());  //redis에 1시간동안 저장
 
         return tokenInfo;
 

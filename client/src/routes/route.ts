@@ -155,18 +155,7 @@ export const getUserByUsername = async (username: string) => {
   return res;
 };
 
-export const putUserName = async (id: string, newName: string) => {
-  const res = await customFetch(serverURL, {
-    method: "PUT",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ id, newName }),
-  });
 
-  return res;
-};
 
 export const putUserPW = async (username: string) => {
   const accessToken = Cookies.get('accessToken');
@@ -175,9 +164,8 @@ export const putUserPW = async (username: string) => {
     credentials: "include",
     headers: {
       "Authorization": `Bearer ${accessToken}`,
-      "Content-Type": "text/plain",
+      "Content-Type": "application/json",
     },
-    // body: JSON.stringify({username}),
     body: username,
   });
 };
@@ -202,7 +190,7 @@ export const deleteUser = async (username: string) => {
     credentials: "include",
     headers: {
       "Authorization": `Bearer ${accessToken}`,
-      "Content-Type": "text/plain",
+      "Content-Type": "application/json",
     },
     body: username,
   });

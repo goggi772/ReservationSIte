@@ -31,9 +31,9 @@ public class MemberDTO {
         this.isVIP = member.isVIP();
 
         if (member.getReservedTime() != null) {
-            this.reservedTime = member.getReservedTime().format(DateTimeFormatter.ofPattern("HH : mm : ss"));
+            this.reservedTime = member.getReservedTime().format(DateTimeFormatter.ofPattern("MM/dd HH : mm : ss"));
         } else {
-            this.reservedTime = "-- : -- : --";
+            this.reservedTime = "--/-- -- : -- : --";
         }
     }
 }

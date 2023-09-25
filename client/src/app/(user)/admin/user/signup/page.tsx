@@ -1,7 +1,7 @@
 "use client";
 
 import WithAdminOnly from "@/components/hoc/WithAdminOnly";
-import {postSignup, putUserName} from "@/routes/route";
+import {postSignup} from "@/routes/route";
 import {useState} from "react";
 import {Simulate} from "react-dom/test-utils";
 import error = Simulate.error;
@@ -22,13 +22,6 @@ const SignupPage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    // const formData = new FormData(e.currentTarget);
-
-    // const username = formData.get("username") as string;
-    // const password = formData.get("password") as string;
-    // const phoneNumber = formData.get("phoneNumber") as string;
-    // const isVIP = formData.has("isVIP");
 
     if (formData.username == "" || formData.password == "") {
       setError("필수 입력 사항 입니다.");

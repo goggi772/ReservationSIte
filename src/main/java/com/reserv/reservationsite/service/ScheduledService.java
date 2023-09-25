@@ -32,9 +32,9 @@ public class ScheduledService {
 
     private final RedisTemplate<String, Object> redisTemplate;
 
-    @Scheduled(cron = "0 4 2,19,20,21 ? * MON-SUN", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 20 18,19,20,21 ? * MON-FRI", zone = "Asia/Seoul")
     @Scheduled(cron = "0 0 8,9,10 ? * MON-FRI", zone = "Asia/Seoul")
-    public void reset_bike() {  //월~금 8시5분, 9시5분, 10시 5분, 6시25분, 7시25분, 8시25분, 9시25분에 bike entity 초기화
+    public void reset_bike() {  //월~금 8시, 9시, 10시 , 6시20분, 7시20분, 8시20분, 9시20분에 bike entity 초기화
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -53,8 +53,8 @@ public class ScheduledService {
             log.info("사용자 예약 상태 저장 완료: " + num + "명");
         }
 
-        bikeService.evictAllBikesCache();
-        bikeService.getAllBikesToCache();
+        bikeService.evictAllBikesCache();  // 캐시에 저장해 놓은 Bike의 정보를 삭제
+        bikeService.getAllBikesToCache();  // 전 예약 타임의 예약 정보를 캐시에 담아놓음
 
         log.info("Bike 상태 저장 완료");
 

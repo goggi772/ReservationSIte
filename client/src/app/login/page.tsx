@@ -22,7 +22,6 @@ const LoginPage = () => {
 
 
     if (response.status === 200) {
-      console.log("성공: "+ response.status)
       const data = await response.json();
       const { accessToken, refreshToken } = data;
 

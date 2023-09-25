@@ -53,7 +53,11 @@ const UserInfo = () => {
             const res = await deleteUser(username);
             if (res.status === 200) {
                 alert("삭제되었습니다.");
+                const total = totalCnt;
                 setIUsers((prevUsers) => prevUsers.filter((user) => user.username !== username));
+                setUsersToShow((prevUsers) => prevUsers.filter((user) => user.username !== username));
+                setTotalCnt(total - 1);
+                setTotalPages(Math.ceil(total / pagesize));
             } else if (res.status === 400) {
                 alert("유저가 존재하지 않거나 정상적으로 처리되지 않았습니다.");
             } else {
@@ -86,8 +90,6 @@ const UserInfo = () => {
 
         const fetchUsers = async () => {
             const res = await getIUser();
-            console.log("유저정보 가져오기")
-
             if (res.status == 401) {
                 alert("로그아웃 되었습니다.");
                 return;

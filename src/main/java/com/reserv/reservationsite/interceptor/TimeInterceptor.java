@@ -28,7 +28,7 @@ public class TimeInterceptor implements HandlerInterceptor {
             return true;
         } else {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            return true;
+            return false;
         }
     }
 

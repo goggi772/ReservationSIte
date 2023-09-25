@@ -30,43 +30,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 @RequiredArgsConstructor
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-//    @Override
-//    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-//        String exception = (String)request.getAttribute("exception");
-//        ErrorCode errorCode;
-//
-//        log.debug("log: exception: {} ", exception);
-//
-//        /**
-//         * 토큰 없는 경우
-//         **/
-//        if(exception == null) {
-//            errorCode = ErrorCode.LOGIN_FAILED;
-//            setResponse(response, errorCode);
-//            return;
-//        }
-//
-//        /**
-//         * 토큰 만료된 경우
-//         **/
-//        if(exception.equals(ErrorCode.EXPIRED_TOKEN.getCode())) {
-//            errorCode = ErrorCode.EXPIRED_TOKEN;
-//            setResponse(response, errorCode);
-//            return;
-//        }
-//
-//
-//    /**
-//     * 토큰 시그니처가 다른 경우
-//     **/
-//        if(exception.equals(ErrorCode.INVALID_JWT_TOKEN.getCode())) {
-//            errorCode = ErrorCode.INVALID_JWT_TOKEN;
-//            setResponse(response, errorCode);
-//        }
-//    }
-
-
-
     @Override
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
@@ -81,15 +44,12 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         } else {
             error = "Unknown_Error";
         }
-        System.out.println("e 메시지: "+e);
         String noAuthMessage = "{\n" +
                 "    \"status\": \"FAILURE\",\n" +
                 "    \"message\": \"" + error + "\"\n" +
                 "}";
-//        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(APPLICATION_JSON.toString());
-//        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().println(noAuthMessage);
     }
 }

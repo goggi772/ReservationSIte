@@ -48,7 +48,6 @@ public class AdminController {
     @PostMapping("/resetPassword")
     public ResponseEntity<ErrorResponse> reset_password(@RequestBody String username) throws Exception {
         try {
-            System.out.println(username);
             return memberService.reset_password(username);
 
         } catch (NotFoundUserException e) {
