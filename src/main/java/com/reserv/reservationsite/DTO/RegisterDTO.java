@@ -31,4 +31,14 @@ public class RegisterDTO {
                 .isReserved(isReserved.NOT_RESERVED)
                 .build();
     }
+    public Member toEntityAdmin() {
+        return Member.builder()
+                .username(username)
+                .password(password)
+                .phoneNumber(phoneNumber)
+                .isAdmin(Role.ADMIN)
+                .isVIP(isVIP)
+                .isReserved(isReserved.NOT_RESERVED)
+                .build();
+    }
 }

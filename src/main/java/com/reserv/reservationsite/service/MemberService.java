@@ -87,6 +87,16 @@ public class MemberService {
             return ErrorResponse.toResponseEntity(ErrorCode.STATUS_OK);
         }
     }
+    @Transactional
+    public ResponseEntity<ErrorResponse> registerAdmin(RegisterDTO dto) {
+        if (memberRepository.findByUsername(dto.getUsername()).isPresent()) {
+            throw new NotFoundUserException(ErrorCode.ALREADY_EXIST_USERNAME);
+        } else {
+            dto.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
+            memberRepository.save(dto.toEntityAdmin());
+            return ErrorResponse.toResponseEntity(ErrorCode.STATUS_OK);
+        }
+    }
 
     @Transactional
     public ResponseEntity<ErrorResponse> change_password(String username, String oldPassword, String newPassword) {

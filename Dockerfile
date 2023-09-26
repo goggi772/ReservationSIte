@@ -1,3 +1,5 @@
 FROM openjdk:11-jre
-COPY target/*.jar app.jar
-ENTRYPOINT ["java", "-jar", "app.jar"]
+CMD ["./mvnw", "clean", "package"]
+ARG JAR_FILE_PATH=/build/libs/*.jar
+COPY ${JAR_FILE_PATH} ReservationSite-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["java", "-jar", "ReservationSite-0.0.1-SNAPSHOT.jar"]

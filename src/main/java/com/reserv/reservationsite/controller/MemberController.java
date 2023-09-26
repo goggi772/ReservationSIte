@@ -1,9 +1,6 @@
 package com.reserv.reservationsite.controller;
 
-import com.reserv.reservationsite.DTO.ChangePwDTO;
-import com.reserv.reservationsite.DTO.LoginDTO;
-import com.reserv.reservationsite.DTO.MemberDTO;
-import com.reserv.reservationsite.DTO.TokenInfo;
+import com.reserv.reservationsite.DTO.*;
 import com.reserv.reservationsite.core.entity.Member;
 import com.reserv.reservationsite.core.entity.Role;
 import com.reserv.reservationsite.exception.ErrorCode;
@@ -46,6 +43,17 @@ public class MemberController {
     @PostMapping("/login")
     public TokenInfo login(@RequestBody LoginDTO dto) {
         return memberService.login(dto.getUsername(), dto.getPassword());
+    }
+
+    @PostMapping("/register/admin")
+    public ResponseEntity<ErrorResponse> registerAdmin(@RequestBody RegisterDTO dto) {
+        try {
+            return memberService.registerAdmin(dto);
+        } catch (NotFoundUserException e) {
+            return ErrorResponse.toResponseEntity(e.getErrorCode());
+        } catch (Exception e) {
+            return ErrorResponse.toResponseEntity(ErrorCode.UNKNOWN_ERROR);
+        }
     }
 
     @PostMapping("/api/refreshToken")

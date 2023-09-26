@@ -1,0 +1,26 @@
+version: '3'
+services:
+  postgres:
+    image: postgres
+    container_name: postgres-container
+    environment:
+      POSTGRES_DB: reserv
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5432:5432"
+  spring-boot-app:
+    image: backend-server
+    container_name: backend-server
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+  next-js-app:
+    image: frontend-server
+    container_name: frontend-server
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "80:3000"
