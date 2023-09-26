@@ -81,7 +81,7 @@ public class BikeService {
     public ResponseEntity<ErrorResponse> admin_reservation_cancel(BikeDTO dto) {
         Bike bike = bikeRepository.findById(dto.getBikeId()).orElseThrow(() ->
                 new ReservationNotAvailableException(ErrorCode.NOT_EXIST_BIKE));
-        Member member = memberRepository.findByUsername(dto.getUsername()).orElseThrow(() ->
+        Member member = memberRepository.findByUsername(bike.getOwner()).orElseThrow(() ->
                 new UsernameNotFoundException("존재하지 않는 유저입니다."));
         if (bike.getStatus().equals(BikeStatus.completed) && bike.getOwner() != null) {
             bike.change_bikeStatus(BikeStatus.available);

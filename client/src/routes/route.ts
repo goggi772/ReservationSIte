@@ -31,7 +31,6 @@ async function customFetch(url: string, options: RequestInit) {
           ...options.headers,
           Authorization: `Bearer ${accessToken}`
         };
-        // options.headers.set('Authorization', `Bearer ${accessToken}`);
         return fetch(url, options);
       } else {
         const status = await getLogout();
@@ -66,10 +65,12 @@ export const fetchLogin = async (username: string, password: string) => {
 };
 
 export const getLogout = async () => {
-  const res = await customFetch(serverURL + "/api/logout", {
+  const accessToken = Cookies.get('accessToken');
+  const res = await customFetch(serverURL + "/logout", {
     method: "POST",
     credentials: "include",
     headers: {
+      "Authorization": `Bearer ${accessToken}`,
       "Content-Type": "application/json",
     },
   });

@@ -59,8 +59,7 @@ const BikeInfoModal: React.FC<Props> = ({
           {bike.owner ? (
             <>
               <h2 className="text-lg font-semibold mb-2">예약 정보</h2>
-              <p className="mb-2">User ID: {bike.owner}</p>
-              {/*<p>Name: {ownerName}</p>*/}
+              <p className="mb-2">예약자: {bike.owner}</p>
             </>
           ) : (
             <div></div>

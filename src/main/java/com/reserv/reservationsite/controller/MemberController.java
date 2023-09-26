@@ -30,7 +30,7 @@ import java.security.Principal;
 import java.util.Collection;
 
 @Slf4j
-@RestController
+@Controller
 @RequiredArgsConstructor
 public class MemberController {
 
@@ -40,11 +40,21 @@ public class MemberController {
 
     private final RedisTemplate<String, Object> redisTemplate;
 
+    @ResponseBody
     @PostMapping("/login")
     public TokenInfo login(@RequestBody LoginDTO dto) {
         return memberService.login(dto.getUsername(), dto.getPassword());
     }
 
+    @PostMapping("/logout")
+    public String logout(@AuthenticationPrincipal UserDetails userDetails) {
+        if (Boolean.TRUE.equals(redisTemplate.hasKey("refresh:" + userDetails.getUsername()))) {
+            redisTemplate.delete("refresh:" + userDetails.getUsername());
+        }
+        return "redirect:/api/logout";
+    }
+
+    @ResponseBody
     @PostMapping("/register/admin")
     public ResponseEntity<ErrorResponse> registerAdmin(@RequestBody RegisterDTO dto) {
         try {
@@ -56,23 +66,27 @@ public class MemberController {
         }
     }
 
+    @ResponseBody
     @PostMapping("/api/refreshToken")
     public TokenInfo refreshAccessToken(@RequestBody TokenInfo tokenInfo) {
         return memberService.regenerationAccessToken(tokenInfo);
     }
 
+    @ResponseBody
     @PostMapping("/changePw")
     public ResponseEntity<ErrorResponse> changePw(@AuthenticationPrincipal UserDetails userDetails,
                                                   @RequestBody ChangePwDTO dto) {
         return memberService.change_password(userDetails.getUsername(), dto.getOldPassword(), dto.getNewPassword());
     }
 
+    @ResponseBody
     @GetMapping("/get/user")
     public String get_username(@AuthenticationPrincipal UserDetails userDetails) {
         return userDetails.getUsername();
     }
 
 
+    @ResponseBody
     @GetMapping("/auth/user")
     public void auth_user(HttpServletResponse response,
                           @AuthenticationPrincipal UserDetails userDetails) throws IOException {
@@ -94,6 +108,7 @@ public class MemberController {
 
     }
 
+    @ResponseBody
     @GetMapping("/auth/admin")
     public void auth_admin(@AuthenticationPrincipal UserDetails userDetails, HttpServletResponse response) throws IOException {
         Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();

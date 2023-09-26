@@ -65,7 +65,7 @@ public class SecurityConfig {
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
                 .authorizeRequests()
-                .antMatchers("/register/admin","/api/refreshToken" ,"/login/**", "/js/**", "/css/**", "/image/**").permitAll()
+                .antMatchers("/register/admin","/api/refreshToken" ,"/login/**", "/logout", "/js/**", "/css/**", "/image/**").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
