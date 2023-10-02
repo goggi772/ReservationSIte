@@ -33,13 +33,10 @@ async function customFetch(url: string, options: RequestInit) {
         };
         return fetch(url, options);
       } else {
-        const status = await getLogout();
-        if (status === 204) {
-          Cookies.remove("accessToken");
-          Cookies.remove("refreshToken");
-          alert("다시 로그인해주세요.")
-          window.location.href = "/login";
-        }
+        Cookies.remove("accessToken");
+        Cookies.remove("refreshToken");
+        alert("다시 로그인해주세요.")
+        window.location.href = "/login";
       }
     }
     return response;

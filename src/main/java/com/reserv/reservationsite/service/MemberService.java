@@ -10,6 +10,7 @@ import com.reserv.reservationsite.core.redisRepository.RefreshTokenRepository;
 import com.reserv.reservationsite.exception.*;
 import com.reserv.reservationsite.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
@@ -24,10 +25,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -71,7 +74,9 @@ public class MemberService {
 
         if (refresh != null && jwtTokenProvider.validateToken(refresh)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(access);
-            if (Objects.equals(redisTemplate.opsForValue().get(authentication.getName()), refresh)) {
+            RefreshToken redisgetrefreshToken = refreshTokenRepository.findById(authentication.getName()).orElseThrow(() ->
+                    new JwtTokenException(ErrorCode.TOKEN_ERROR.getDetail(), ErrorCode.TOKEN_ERROR));
+            if (redisgetrefreshToken.getRefreshToken().equals(refresh)) {
                 return jwtTokenProvider.generateToken(authentication, false);
             } else throw new JwtTokenException(ErrorCode.TOKEN_ERROR.getDetail(), ErrorCode.TOKEN_ERROR);
         } else throw new JwtTokenException(ErrorCode.TOKEN_ERROR.getDetail(), ErrorCode.TOKEN_ERROR);
