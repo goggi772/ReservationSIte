@@ -1,7 +1,7 @@
 version: '3'
 services:
   postgres:
-    image: postgres
+    image: sunyub/postgres
     container_name: postgres-container
     environment:
       POSTGRES_DB: "reserv"
@@ -12,7 +12,7 @@ services:
     ports:
       - "5432:5432"
   spring-boot-app:
-    image: backend-server
+    image: sunyub/backend-server
     container_name: backend-server
     depends_on:
       - postgres
@@ -20,7 +20,7 @@ services:
     ports:
       - "8080:8080"
   next-js-app:
-    image: frontend-server
+    image: sunyub/frontend-server
     container_name: frontend-server
     build:
       context: ./client
@@ -28,7 +28,7 @@ services:
     ports:
       - "3000:3000"
   redis:
-    image: redis
+    image: sunyub/redis
     container_name: redis
     ports:
       - "6379:6379"
