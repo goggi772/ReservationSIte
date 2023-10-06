@@ -16,6 +16,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,9 +37,8 @@ public class ScheduledService {
     @Scheduled(cron = "0 20 18,19,20,21 ? * MON-FRI", zone = "Asia/Seoul")
     @Scheduled(cron = "0 0 8,9,10 ? * MON-FRI", zone = "Asia/Seoul")
     public void reset_bike() {  //월~금 8시, 9시, 10시 , 6시20분, 7시20분, 8시20분, 9시20분에 bike entity 초기화
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        ZonedDateTime dateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+        int hour = dateTime.getHour();
 
         if (hour == 9) {
             int num = memberRepository.updateAllByIsReserved(isReserved.IS_RESERVED_9);//bike의 owner들의 isReserved변수를 true로 만들어주는 scheduler
@@ -45,7 +46,7 @@ public class ScheduledService {
         } else if (hour == 10) {
             int num = memberRepository.updateAllByIsReserved(isReserved.IS_RESERVED_10);//bike의 owner들의 isReserved변수를 true로 만들어주는 scheduler
             log.info("사용자 예약 상태 저장 완료: " + num + "명");
-        } else if (hour == 18) {
+        } else if (hour == 19) {
             int num = memberRepository.updateAllByIsReserved(isReserved.IS_RESERVED_1920);//bike의 owner들의 isReserved변수를 true로 만들어주는 scheduler
             log.info("사용자 예약 상태 저장 완료: " + num + "명");
         } else if (hour == 20) {

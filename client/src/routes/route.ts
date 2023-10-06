@@ -63,7 +63,7 @@ export const fetchLogin = async (username: string, password: string) => {
 
 export const getLogout = async () => {
   const accessToken = Cookies.get('accessToken');
-  const res = await fetch(serverURL + "/logout", {
+  const res = await customFetch(serverURL + "/logout", {
     method: "POST",
     credentials: "include",
     headers: {

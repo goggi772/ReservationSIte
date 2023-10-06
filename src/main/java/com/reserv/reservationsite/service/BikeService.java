@@ -22,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,7 +49,7 @@ public class BikeService {
             } else {
                 bike.seat_reserv(member.getUsername());
                 bikeRepository.save(bike);
-                member.set_reserved_time(LocalDateTime.now());
+                member.set_reserved_time(ZonedDateTime.now(ZoneId.of("Asia/Seoul")));
                 memberRepository.save(member);
                 return ErrorResponse.toResponseEntity(ErrorCode.RESERVATION_SUCCESSFUL);
             }

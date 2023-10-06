@@ -17,6 +17,10 @@ const LogoutBtn = () => {
       alert("로그아웃 되었습니다.")
       router.push("/login");
     }
+    else {
+      alert("error")
+      window.location.reload();
+    }
   };
 
   return (
