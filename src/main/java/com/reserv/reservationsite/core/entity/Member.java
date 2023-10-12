@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
@@ -41,12 +42,23 @@ public class Member {
     @Column(nullable = false)
     private Role isAdmin;
 
+    @Column
+    private LocalDate startDate;
+
+    @Column
+    private LocalDate endDate;
+
     public void reset_change_pass(String password) {
         this.password = password;
     }
 
     public void set_reserved_time(ZonedDateTime time) {
         this.reservedTime = time;
+    }
+
+    public void set_startDate_endDate(LocalDate startDate, LocalDate endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
 

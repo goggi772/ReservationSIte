@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Getter
@@ -22,6 +23,10 @@ public class MemberDTO {
 
     private String reservedTime;
 
+    private LocalDate startDate;
+
+    private LocalDate endDate;
+
     private boolean isVIP;
 
     public MemberDTO(Member member) {
@@ -29,6 +34,8 @@ public class MemberDTO {
         this.phoneNumber = member.getPhoneNumber();
         this.reserved = member.getIsReserved().getMessage();
         this.isVIP = member.isVIP();
+        this.startDate = member.getStartDate();
+        this.endDate = member.getEndDate();
 
         if (member.getReservedTime() != null) {
             this.reservedTime = member.getReservedTime().format(DateTimeFormatter.ofPattern("MM/dd HH : mm : ss"));

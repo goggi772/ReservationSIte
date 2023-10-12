@@ -72,11 +72,13 @@ public class BikeService {
 
     @Cacheable(value = "bikeCache", key = "'Bikes_Clone'")
     public List<Bike> getAllBikesToCache() {
+        log.info("캐시 생성");
         return bikeRepository.findAllByOrderByIdAsc();
 
     }
     @CacheEvict(value = "bikeCache", key = "'Bikes_Clone'")
     public void evictAllBikesCache() {
+        log.info("캐시 비워짐");
     }
 
     @Transactional
