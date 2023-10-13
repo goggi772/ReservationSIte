@@ -15,6 +15,8 @@ export interface IUser {
   reserved: string;
   reservedTime: string,
   vip: boolean;
+  startDate: string;
+  endDate: string;
 }
 
 export interface IBike {

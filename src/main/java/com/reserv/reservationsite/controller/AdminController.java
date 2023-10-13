@@ -4,6 +4,7 @@ import com.reserv.reservationsite.DTO.BikeDTO;
 import com.reserv.reservationsite.DTO.MemberDTO;
 import com.reserv.reservationsite.DTO.RegisterDTO;
 import com.reserv.reservationsite.core.entity.Bike;
+import com.reserv.reservationsite.core.entity.Member;
 import com.reserv.reservationsite.core.entity.Role;
 import com.reserv.reservationsite.exception.ErrorCode;
 import com.reserv.reservationsite.exception.ErrorResponse;
@@ -87,5 +88,14 @@ public class AdminController {
     @GetMapping("/get/bike/cache")
     public List<Bike> getBikeStatusToCache() {
         return bikeService.getAllBikesToCache();
+    }
+
+    @PostMapping("/modify/member/date")
+    public ResponseEntity<ErrorResponse> modifyDate(@RequestBody MemberDTO dto) {
+        try {
+            return memberService.modify_member_date(dto);
+        } catch (Exception e) {
+            return ErrorResponse.toResponseEntity(ErrorCode.UNKNOWN_ERROR);
+        }
     }
 }

@@ -138,6 +138,16 @@ public class MemberService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public ResponseEntity<ErrorResponse> modify_member_date(MemberDTO dto) {
+        Member member = memberRepository.findByUsername(dto.getUsername()).orElseThrow(() ->
+                new NotFoundUserException(ErrorCode.NOT_EXIST_USER));
+        member.set_startDate_endDate(dto.getStartDate(), dto.getEndDate());
+        memberRepository.save(member);
+
+        return ErrorResponse.toResponseEntity(ErrorCode.STATUS_OK);
+    }
+
 
 
 

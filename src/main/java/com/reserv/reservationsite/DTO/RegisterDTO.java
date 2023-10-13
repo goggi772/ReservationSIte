@@ -6,6 +6,8 @@ import com.reserv.reservationsite.core.entity.Role;
 import com.reserv.reservationsite.core.entity.isReserved;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,6 +23,10 @@ public class RegisterDTO {
     @JsonProperty("isVIP")
     private boolean isVIP;
 
+    private LocalDate startDate;
+
+    private LocalDate endDate;
+
     public Member toEntity() {
         return Member.builder()
                 .username(username)
@@ -29,6 +35,8 @@ public class RegisterDTO {
                 .isAdmin(Role.USER)
                 .isVIP(isVIP)
                 .isReserved(isReserved.NOT_RESERVED)
+                .startDate(startDate)
+                .endDate(endDate)
                 .build();
     }
     public Member toEntityAdmin() {

@@ -132,7 +132,7 @@ const SeatsPage = () => {
     if (hour < 10)  return "9시 타임 예약 현황"
     else if ((hour >= 10 && hour < 19) || (hour == 19 && min <= 20)) return "10시 타임 예약 현황"
     else if ((hour == 19 && min > 20) || (hour == 20 && min <= 20)) return " 7시 20분 타임 예약 현황"
-    else return "8시 타임 예약 현황"
+    else return "8시 20분 타임 예약 현황"
   }
 
 

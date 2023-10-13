@@ -155,6 +155,14 @@ const UserInfo = () => {
                     </th>
                     <th scope="col"
                         className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                        시작날짜
+                    </th>
+                    <th scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                        종료날짜
+                    </th>
+                    <th scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                         VIP
                     </th>
                     <th scope="col"
@@ -171,7 +179,7 @@ const UserInfo = () => {
                     </th>
                     <th scope="col"
                         className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                        회원 정보 삭제
+                        회원정보삭제
                     </th>
                 </tr>
                 </thead>
@@ -187,6 +195,12 @@ const UserInfo = () => {
                         </td>
                         <td className="px-6 whitespace-nowrap" width="100px">
                             <div className="text-sm text-gray-900">{user.phoneNumber}</div>
+                        </td>
+                        <td className="px-2 whitespace-nowrap" width="100px">
+                            <div className="text-sm text-gray-900">{user.startDate}</div>
+                        </td>
+                        <td className="px-2 whitespace-nowrap" width="100px">
+                            <div className="text-sm text-gray-900">{user.endDate}</div>
                         </td>
                         <td className="px-6 whitespace-nowrap" width="100px">
                             <div className="text-sm text-gray-900">{user.vip ? 'VIP' : '일반회원'}</div>

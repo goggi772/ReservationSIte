@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import Cookies from "js-cookie";
 import fetchIntercept from "fetch-intercept";
+import {date} from "zod";
 
 dotenv.config();
 
@@ -119,10 +120,12 @@ export const putBikeInfo = async (bikeId: number) => {
 };
 
 export const postSignup = async (
-  username: string,
-  password: string,
-  phoneNumber: string,
-  isVIP: boolean
+    username: string,
+    password: string,
+    phoneNumber: string,
+    isVIP: boolean,
+    startDate: string,
+    endDate: string
 ) => {
   const accessToken = Cookies.get('accessToken');
   const res = await customFetch(serverURL + "/admin/register", {
@@ -132,28 +135,11 @@ export const postSignup = async (
       "Authorization": `Bearer ${accessToken}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ username, password, phoneNumber, isVIP }),
+    body: JSON.stringify({username, password, phoneNumber, isVIP, startDate, endDate}),
   });
 
   return res.status;
 };
-
-export const getUserByUsername = async (username: string) => {
-  const accessToken = Cookies.get('accessToken');
-  const res = await customFetch(serverURL, {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      "Authorization": `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ username }),
-  });
-
-  return res;
-};
-
-
 
 export const putUserPW = async (username: string) => {
   const accessToken = Cookies.get('accessToken');
@@ -286,6 +272,23 @@ export const getBikesInfoClone = async () => {
       "Authorization": `Bearer ${accessToken}`,
       "Content-Type": "application/json",
     },
+  });
+
+  return res;
+}
+
+export const modifyDate = async (startDate: string,
+                                 endDate: string,
+                                 username: string) => {
+  const accessToken = Cookies.get('accessToken');
+  const res = await customFetch(serverURL + `/admin/modify/member/date`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Authorization": `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ startDate, endDate, username }),
   });
 
   return res;
