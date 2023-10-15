@@ -3,7 +3,7 @@
 import WithAdminOnly from "@/components/hoc/WithAdminOnly";
 import { useEffect, useState } from "react";
 import { IUser } from "@/interface/interface";
-import {deleteUser, getIUser, putUserPW} from "@/routes/route";
+import {deleteUser, getIUser, modifyDate, putUserPW} from "@/routes/route";
 import Pagination from "@/components/UserInfoPaging";
 import React from "react";
 import {element} from "prop-types";
@@ -11,6 +11,7 @@ import UserInfoBtn from "@/components/button/UserInfoBtn";
 import AdminHomeBtn from "@/components/button/AdminHomeBtn";
 import SignupBtn from "@/components/button/SignupBtn";
 import LogoutBtn from "@/components/button/LogoutBtn";
+import ModifyDateModal from "@/components/ModifyDateModal";
 
 
 const UserInfo = () => {
@@ -22,6 +23,9 @@ const UserInfo = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [totalCnt, setTotalCnt] = useState(0);
     const [pagesize, setPageSize] = useState(10);
+    const [userin, setUserIn] = useState<IUser | null>(null);
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [position, setPosition] = useState({x: 0, y: 0});
 
 
     const handlePageChange = (page: number) => {
@@ -85,6 +89,30 @@ const UserInfo = () => {
 
 
     };
+    const handleModifyDate = async (modifiedUser: IUser | null) => {
+        const res = await modifyDate(modifiedUser?.startDate || '',
+            modifiedUser?.endDate||'', modifiedUser?.username||'');
+        if (res.status == 200) {
+            alert("수정되었습니다.");
+            const updateUser = usersToShow.map(user => {
+                if (user.username === modifiedUser?.username) {
+                    return {...user, ...modifiedUser}
+                }
+                return user;
+            })
+            setUsersToShow(updateUser);
+        } else {
+            alert("존재하지 않는 유저입니다.")
+            window.location.reload();
+        }
+    }
+    const handleDateClick = async (user: IUser, e: React.MouseEvent) => {
+        setUserIn(user);
+        const x = e.clientX;
+        const y = e.clientY;
+        setPosition({x, y});
+        setModalOpen(true);
+    }
 
     useEffect(() => {
 
@@ -110,6 +138,8 @@ const UserInfo = () => {
 
     return (
         <div className="flex flex-col justify-center items-center h-screen px-28">
+            <ModifyDateModal IUser={userin} isOpen={isModalOpen} onClose={() => setModalOpen(false)}
+                             position={position} modifyButton={handleModifyDate}/>
             <div className="ml-auto">
                 <div className="space-x-4">
                     <UserInfoBtn/>
@@ -163,6 +193,10 @@ const UserInfo = () => {
                     </th>
                     <th scope="col"
                         className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                        수정
+                    </th>
+                    <th scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                         VIP
                     </th>
                     <th scope="col"
@@ -197,10 +231,10 @@ const UserInfo = () => {
                             <div className="text-sm text-gray-900">{user.phoneNumber}</div>
                         </td>
                         <td className="px-2 whitespace-nowrap" width="100px">
-                            <div className="text-sm text-gray-900">{user.startDate}</div>
+                            <div className="text-sm text-gray-900" onClick={(e) => handleDateClick(user, e)}>{user.startDate}</div>
                         </td>
                         <td className="px-2 whitespace-nowrap" width="100px">
-                            <div className="text-sm text-gray-900">{user.endDate}</div>
+                            <div className="text-sm text-gray-900" onClick={(e) => handleDateClick(user, e)}>{user.endDate}</div>
                         </td>
                         <td className="px-6 whitespace-nowrap" width="100px">
                             <div className="text-sm text-gray-900">{user.vip ? 'VIP' : '일반회원'}</div>

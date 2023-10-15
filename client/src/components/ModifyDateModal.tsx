@@ -1,40 +1,43 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
+import {IUser} from "@/interface/interface";
 
 import { IBike } from "@/interface/interface";
 import {start} from "repl";
 import {modifyDate} from "@/routes/route";
+import {FormData} from "next/dist/compiled/@edge-runtime/primitives";
 interface Props {
-    username: string;
-    startDate: string;
-    endDate: string;
+    IUser: IUser | null;
     isOpen: boolean;
     onClose: () => void;
     position: { x: number; y: number };
+    modifyButton: (user: IUser | null) => Promise<void>;
 }
 
 
 
 const ModifyDateModal: React.FC<Props> = ({
-  username,
-  startDate,
-  endDate,
+  IUser,
   isOpen,
   onClose,
-  position
+  position,
+  modifyButton
 }) => {
+  if (!IUser) return <Modal isOpen={isOpen} onRequestClose={onClose} ariaHideApp={false}></Modal>;
+
   const [modalPosition, setModalPosition] = useState(position);
   const [formData, setFormData] = useState({
-     startDate: startDate,
-     endDate: endDate
+     startDate: IUser?.startDate || '',
+     endDate: IUser?.endDate || ''
   });
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await modifyDate(formData.startDate, formData.endDate, username);
-      if (res.status == 200) {
-          alert("성공하였습니다.");
-          onClose();
-      }
+    const modifiedUser: IUser = {
+        ...IUser,
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+    };
+    await modifyButton(modifiedUser);
   }
 
     const handleInputChange = (
@@ -52,8 +55,8 @@ const ModifyDateModal: React.FC<Props> = ({
     <Modal isOpen={isOpen} onRequestClose={onClose} ariaHideApp={false}
            style={{
              content: {
-               width: '40%', // 원하는 크기로 조절
-               height: '20%',
+               width: '20%', // 원하는 크기로 조절
+               height: '10%',
                margin: 'auto', // 가운데 정렬
                top: modalPosition.y,
                left: modalPosition.x,
@@ -102,3 +105,5 @@ const ModifyDateModal: React.FC<Props> = ({
         </Modal>
     )
 };
+
+export default ModifyDateModal;
